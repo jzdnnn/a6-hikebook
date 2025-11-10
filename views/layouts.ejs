@@ -1,0 +1,30 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= title %> - HikeBook</title>
+  <style>
+    /* CSS Sederhana untuk demo */
+    body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; flex-direction: column; min-height: 100vh; background: #f8f9fa; }
+    main { padding: 20px; flex-grow: 1; }
+    header { display: flex; justify-content: space-between; align-items: center; padding: 20px; background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%); border-bottom: 1px solid #ddd; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    header .logo { font-weight: bold; font-size: 1.5rem; color: white; }
+    header .logo a { color: white; text-decoration: none; }
+    header nav a { margin-left: 15px; text-decoration: none; color: white; font-weight: 500; transition: opacity 0.3s; }
+    header nav a:hover { opacity: 0.8; }
+    footer { text-align: center; padding: 20px; background: #2c5f2d; color: white; margin-top: auto; }
+  </style>
+</head>
+<body>
+
+  <%- include('partials/header') %>
+
+  <main>
+    <%- body %>
+  </main>
+
+  <%- include('partials/footer') %>
+
+</body>
+</html>

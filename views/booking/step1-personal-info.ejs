@@ -1,0 +1,268 @@
+﻿<style>
+  .booking-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .booking-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  .booking-progress::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+  }
+  
+  .progress-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+  
+  .progress-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #e0e0e0;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .progress-step.active .progress-circle {
+    background: #2c5f2d;
+    border-color: #2c5f2d;
+    color: white;
+  }
+  
+  .progress-step.completed .progress-circle {
+    background: #97bc62;
+    border-color: #97bc62;
+    color: white;
+  }
+  
+  .progress-label {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .progress-step.active .progress-label {
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  .booking-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  }
+  
+  .package-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    border-left: 4px solid #2c5f2d;
+  }
+  
+  .package-summary h3 {
+    margin-top: 0;
+    color: #2c5f2d;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .form-group label .required {
+    color: #dc3545;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #2c5f2d;
+  }
+  
+  .form-help {
+    font-size: 0.85em;
+    color: #666;
+    margin-top: 5px;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .btn-primary {
+    background: #2c5f2d;
+    color: white;
+    flex: 1;
+  }
+  
+  .btn-primary:hover {
+    background: #1e4520;
+  }
+</style>
+
+<div class="booking-container">
+  <!-- Progress Bar -->
+  <div class="booking-progress">
+    <div class="progress-step active">
+      <div class="progress-circle">1</div>
+      <div class="progress-label">Data Diri</div>
+    </div>
+    <div class="progress-step">
+      <div class="progress-circle">2</div>
+      <div class="progress-label">Data Kelompok</div>
+    </div>
+    <div class="progress-step">
+      <div class="progress-circle">3</div>
+      <div class="progress-label">Review</div>
+    </div>
+    <div class="progress-step">
+      <div class="progress-circle">4</div>
+      <div class="progress-label">Payment</div>
+    </div>
+  </div>
+  
+  <div class="booking-card">
+    <!-- Package Summary -->
+    <div class="package-summary">
+      <h3>� Paket yang Dipilih</h3>
+      <p><strong><%= package.name %></strong></p>
+      <p>� Rp <%= package.price.toLocaleString('id-ID') %> / orang</p>
+      <p>⏱️ <%= package.duration %> | � <%= package.distance %></p>
+    </div>
+    
+    <h2>� Data Pemesan</h2>
+    <p>Silakan isi data diri Anda sebagai pemesan utama.</p>
+    
+    <form action="/booking/step1" method="POST">
+      <div class="form-group">
+        <label for="customerName">
+          Nama Lengkap <span class="required">*</span>
+        </label>
+        <input 
+          type="text" 
+          id="customerName" 
+          name="customerName" 
+          class="form-control" 
+          placeholder="Masukkan nama lengkap sesuai KTP"
+          required
+        />
+        <div class="form-help">Nama harus sesuai dengan identitas resmi</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="customerEmail">
+          Email <span class="required">*</span>
+        </label>
+        <input 
+          type="email" 
+          id="customerEmail" 
+          name="customerEmail" 
+          class="form-control" 
+          placeholder="contoh@email.com"
+          required
+        />
+        <div class="form-help">Konfirmasi booking akan dikirim ke email ini</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="customerPhone">
+          Nomor Telepon/WhatsApp <span class="required">*</span>
+        </label>
+        <input 
+          type="tel" 
+          id="customerPhone" 
+          name="customerPhone" 
+          class="form-control" 
+          placeholder="08xxxxxxxxxx"
+          required
+        />
+        <div class="form-help">Digunakan untuk komunikasi terkait booking</div>
+      </div>
+      
+      <div class="form-group">
+        <label for="hikingDate">
+          Tanggal Pendakian <span class="required">*</span>
+        </label>
+        <input 
+          type="date" 
+          id="hikingDate" 
+          name="hikingDate" 
+          class="form-control" 
+          min="<%= new Date().toISOString().split('T')[0] %>"
+          required
+        />
+        <div class="form-help">Pilih tanggal mulai pendakian</div>
+      </div>
+      
+      <div class="form-actions">
+        <a href="/package/<%= package.id %>" class="btn btn-secondary">
+          ← Kembali
+        </a>
+        <button type="submit" class="btn btn-primary">
+          Lanjut ke Data Kelompok →
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+

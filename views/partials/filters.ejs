@@ -1,0 +1,414 @@
+﻿<!-- Quick Stats -->
+<div class="sidebar-module stats-module">
+  <div class="module-header">
+    <h4>� Statistik</h4>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-item">
+      <div class="stat-icon">�️</div>
+      <div class="stat-content">
+        <div class="stat-value">4</div>
+        <div class="stat-label">Jalur Tersedia</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">✅</div>
+      <div class="stat-content">
+        <div class="stat-value">127</div>
+        <div class="stat-label">Booking Hari Ini</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">🌡️</div>
+      <div class="stat-content">
+        <div class="stat-value">22°C</div>
+        <div class="stat-label">Suhu Rata-rata</div>
+      </div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-icon">�</div>
+      <div class="stat-content">
+        <div class="stat-value">423</div>
+        <div class="stat-label">Sisa Kuota Pendakian</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Weather Widget -->
+<div class="sidebar-module weather-module">
+  <div class="module-header">
+    <h4>🌤️ Cuaca Hari Ini</h4>
+  </div>
+  <div class="weather-content">
+    <div class="weather-main">
+      <div class="weather-icon">⛅</div>
+      <div class="weather-temp">24°C</div>
+    </div>
+    <div class="weather-desc">Berawan Sebagian</div>
+    <div class="weather-details">
+      <div class="weather-detail-item">
+        <span>� Angin:</span>
+        <span>12 km/h</span>
+      </div>
+      <div class="weather-detail-item">
+        <span>� Kelembaban:</span>
+        <span>75%</span>
+      </div>
+      <div class="weather-detail-item">
+        <span>🌧️ Hujan:</span>
+        <span>20%</span>
+      </div>
+    </div>
+    <div class="weather-status good">
+      ✓ Kondisi Baik untuk Mendaki
+    </div>
+  </div>
+</div>
+
+<!-- Filter Module -->
+<div class="sidebar-module filter-module">
+  <div class="module-header">
+    <h4>� Filter Jalur</h4>
+  </div>
+  
+  <div class="filter-group">
+    <label for="price-range">Harga Maksimal: Rp <span id="price-value"><%= maxPrice.toLocaleString('id-ID') %></span></label>
+    <input type="range" id="price-range" name="price" min="0" max="<%= maxPrice %>" value="<%= maxPrice %>" step="50000" style="width: 100%;">
+  </div>
+
+  <div class="filter-group">
+    <h5>Tingkat Kesulitan</h5>
+    <% difficulties.forEach(difficulty => { %>
+      <div class="checkbox-item">
+        <input type="checkbox" id="<%= difficulty.replace(/\s+/g, '-') %>" name="difficulty" value="<%= difficulty %>">
+        <label for="<%= difficulty.replace(/\s+/g, '-') %>"><%= difficulty %></label>
+      </div>
+    <% }); %>
+  </div>
+
+  <div class="filter-actions">
+    <button class="filter-button">Terapkan Filter</button>
+    <button class="reset-button">Reset</button>
+  </div>
+</div>
+
+<!-- Emergency Contact -->
+<div class="sidebar-module emergency-module">
+  <div class="module-header">
+    <h4>� Kontak Darurat</h4>
+  </div>
+  <div class="emergency-content">
+    <a href="tel:112" class="emergency-btn">
+      <span class="emergency-icon">�</span>
+      <div>
+        <div class="emergency-label">Panggilan Darurat</div>
+        <div class="emergency-number">112</div>
+      </div>
+    </a>
+    <a href="tel:081234567890" class="emergency-btn">
+      <span class="emergency-icon">⛑️</span>
+      <div>
+        <div class="emergency-label">Basarnas</div>
+        <div class="emergency-number">0812-3456-7890</div>
+      </div>
+    </a>
+  </div>
+</div>
+
+<style>
+  /* Sidebar Module Base */
+  .sidebar-module {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+  
+  .sidebar-module:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  
+  .module-header {
+    padding: 15px 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #2c5f2d;
+  }
+  
+  .module-header h4 {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1rem;
+    font-weight: bold;
+  }
+  
+  /* Stats Module */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1px;
+    background: #e0e0e0;
+  }
+  
+  .stat-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 15px;
+    background: white;
+  }
+  
+  .stat-icon {
+    font-size: 2rem;
+  }
+  
+  .stat-value {
+    font-size: 1.3rem;
+    font-weight: bold;
+    color: #2c5f2d;
+  }
+  
+  .stat-label {
+    font-size: 0.75rem;
+    color: #666;
+  }
+  
+  /* Weather Module */
+  .weather-content {
+    padding: 20px;
+  }
+  
+  .weather-main {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin-bottom: 10px;
+  }
+  
+  .weather-icon {
+    font-size: 3rem;
+  }
+  
+  .weather-temp {
+    font-size: 2.5rem;
+    font-weight: bold;
+    color: #2c5f2d;
+  }
+  
+  .weather-desc {
+    text-align: center;
+    color: #666;
+    margin-bottom: 15px;
+    font-size: 0.95rem;
+  }
+  
+  .weather-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 15px;
+  }
+  
+  .weather-detail-item {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.9rem;
+    color: #555;
+  }
+  
+  .weather-status {
+    padding: 10px;
+    border-radius: 8px;
+    text-align: center;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  .weather-status.good {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .weather-status.bad {
+    background: #f8d7da;
+    color: #721c24;
+  }
+  
+  /* Filter Module */
+  .filter-group {
+    padding: 15px 20px;
+  }
+  
+  .filter-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .filter-group h5 {
+    margin: 0 0 10px 0;
+    color: #2c5f2d;
+    font-size: 0.95rem;
+  }
+  
+  .checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+  }
+  
+  .checkbox-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+  }
+  
+  .checkbox-item label {
+    margin: 0;
+    cursor: pointer;
+    font-weight: normal;
+  }
+  
+  input[type="range"] {
+    width: 100%;
+    margin-top: 5px;
+    accent-color: #2c5f2d;
+  }
+  
+  #price-value {
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  .filter-actions {
+    padding: 15px 20px;
+    display: flex;
+    gap: 10px;
+  }
+  
+  .filter-button {
+    flex: 1;
+    padding: 12px;
+    background: #2c5f2d;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.3s;
+  }
+  
+  .filter-button:hover {
+    background: #1e4620;
+  }
+  
+  .reset-button {
+    padding: 12px 20px;
+    background: white;
+    color: #666;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .reset-button:hover {
+    border-color: #2c5f2d;
+    color: #2c5f2d;
+  }
+    
+  /* Tips Module */
+  .tips-list {
+    padding: 15px 20px;
+  }
+  
+  .tip-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-bottom: 12px;
+    padding: 10px;
+    background: #f8f9fa;
+    border-radius: 8px;
+  }
+  
+  .tip-icon {
+    font-size: 1.3rem;
+  }
+  
+  .tip-text {
+    flex: 1;
+    font-size: 0.9rem;
+    color: #555;
+    line-height: 1.4;
+  }
+  
+  /* Emergency Module */
+  .emergency-content {
+    padding: 15px 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  .emergency-btn {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    padding: 15px;
+    background: linear-gradient(135deg, #dc3545, #ff6b7a);
+    color: white;
+    border-radius: 10px;
+    text-decoration: none;
+    transition: transform 0.3s;
+  }
+  
+  .emergency-btn:hover {
+    transform: scale(1.02);
+  }
+  
+  .emergency-icon {
+    font-size: 2rem;
+  }
+  
+  .emergency-label {
+    font-size: 0.85rem;
+    opacity: 0.9;
+  }
+  
+  .emergency-number {
+    font-size: 1.2rem;
+    font-weight: bold;
+  }
+</style>
+
+<script>
+  // Price range slider
+  const priceRange = document.getElementById('price-range');
+  const priceValue = document.getElementById('price-value');
+  
+  priceRange.addEventListener('input', function() {
+    const value = parseInt(this.value);
+    priceValue.textContent = value.toLocaleString('id-ID');
+  });
+  
+  // Filter button
+  document.querySelector('.filter-button').addEventListener('click', function() {
+    alert('Filter diterapkan! (Fitur akan diimplementasikan)');
+  });
+  
+  // Reset button
+  document.querySelector('.reset-button').addEventListener('click', function() {
+    document.querySelectorAll('input[type="checkbox"]').forEach(cb => cb.checked = false);
+    priceRange.value = priceRange.max;
+    priceValue.textContent = parseInt(priceRange.max).toLocaleString('id-ID');
+  });
+</script>

@@ -1,0 +1,128 @@
+﻿<%
+  // Default values
+  const variant = locals.heroVariant || 'default'; // default, centered, with-background, minimal
+  const title = locals.heroTitle || 'Welcome';
+  const subtitle = locals.heroSubtitle || '';
+  const bgImage = locals.heroBgImage || '';
+  const bgColor = locals.heroBgColor || 'linear-gradient(135deg, #97bc62 0%, #2c5f2d 100%)';
+  const textAlign = locals.heroTextAlign || 'center';
+  const height = locals.heroHeight || 'auto';
+  const showButton = locals.heroShowButton !== false;
+  const buttonText = locals.heroButtonText || 'Get Started';
+  const buttonLink = locals.heroButtonLink || '#';
+%>
+
+<style>
+  .hero-component {
+    position: relative;
+    background: <%= bgColor %>;
+    <% if (bgImage) { %>
+    background-image: url('<%= bgImage %>');
+    background-size: cover;
+    background-position: center;
+    <% } %>
+    color: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 30px;
+    <% if (height !== 'auto') { %>
+    height: <%= height %>;
+    <% } %>
+  }
+  
+  .hero-component::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.3);
+    z-index: 1;
+    <% if (!bgImage) { %>
+    display: none;
+    <% } %>
+  }
+  
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    padding: 60px 40px;
+    text-align: <%= textAlign %>;
+    <% if (variant === 'centered') { %>
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    <% } %>
+  }
+  
+  .hero-component.minimal .hero-content {
+    padding: 40px 20px;
+  }
+  
+  .hero-title {
+    margin: 0 0 15px 0;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.2);
+    <% if (variant === 'minimal') { %>
+    font-size: 2rem;
+    <% } %>
+  }
+  
+  .hero-subtitle {
+    margin: 0 0 25px 0;
+    font-size: 1.2rem;
+    opacity: 0.95;
+    max-width: 700px;
+    <% if (textAlign === 'center') { %>
+    margin-left: auto;
+    margin-right: auto;
+    <% } %>
+  }
+  
+  .hero-button {
+    display: inline-block;
+    padding: 14px 32px;
+    background: white;
+    color: #2c5f2d;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    transition: all 0.3s;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  }
+  
+  .hero-button:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  }
+  
+  @media (max-width: 768px) {
+    .hero-title {
+      font-size: 1.8rem;
+    }
+    .hero-subtitle {
+      font-size: 1rem;
+    }
+    .hero-content {
+      padding: 40px 20px;
+    }
+  }
+</style>
+
+<div class="hero-component <%= variant %>">
+  <div class="hero-content">
+    <h1 class="hero-title"><%= title %></h1>
+    <% if (subtitle) { %>
+      <p class="hero-subtitle"><%= subtitle %></p>
+    <% } %>
+    <% if (showButton) { %>
+      <a href="<%= buttonLink %>" class="hero-button"><%= buttonText %></a>
+    <% } %>
+  </div>
+</div>
+

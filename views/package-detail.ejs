@@ -1,0 +1,199 @@
+﻿<style>
+  .package-detail-container {
+    max-width: 900px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .package-header {
+    background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    margin-bottom: 30px;
+  }
+  
+  .package-header h1 {
+    margin: 0 0 10px 0;
+    font-size: 2.5em;
+  }
+  
+  .package-price {
+    font-size: 2em;
+    font-weight: bold;
+    margin: 10px 0;
+  }
+  
+  .package-info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .info-card {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 10px;
+    padding: 20px;
+    text-align: center;
+    transition: all 0.3s ease;
+  }
+  
+  .info-card:hover {
+    border-color: #2c5f2d;
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  }
+  
+  .info-card-icon {
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  .info-card-label {
+    font-size: 0.9em;
+    color: #666;
+    margin-bottom: 5px;
+  }
+  
+  .info-card-value {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: #2c5f2d;
+  }
+  
+  .package-description {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  
+  .package-description h2 {
+    color: #2c5f2d;
+    margin-bottom: 15px;
+  }
+  
+  .booking-section {
+    background: #f8f9fa;
+    border-radius: 10px;
+    padding: 30px;
+    text-align: center;
+  }
+  
+  .btn-book-now {
+    background: #2c5f2d;
+    color: white;
+    padding: 15px 50px;
+    font-size: 1.2em;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.3s ease;
+  }
+  
+  .btn-book-now:hover {
+    background: #1e4520;
+    transform: scale(1.05);
+  }
+  
+  .btn-back {
+    background: #6c757d;
+    color: white;
+    padding: 10px 25px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    margin-right: 15px;
+  }
+  
+  .btn-back:hover {
+    background: #5a6268;
+  }
+  
+  .difficulty-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .difficulty-mudah { background: #d4edda; color: #155724; }
+  .difficulty-sedang { background: #fff3cd; color: #856404; }
+  .difficulty-menantang { background: #f8d7da; color: #721c24; }
+  .difficulty-sulit { background: #f5c6cb; color: #721c24; }
+</style>
+
+<div class="package-detail-container">
+  <div class="package-header">
+    <h1><%= package.name %></h1>
+    <p><%= package.description %></p>
+    <div class="package-price">Rp <%= package.price.toLocaleString('id-ID') %></div>
+    <span class="difficulty-badge difficulty-<%= package.difficulty.toLowerCase() %>">
+      <%= package.difficulty %>
+    </span>
+  </div>
+  
+  <div class="package-info-grid">
+    <div class="info-card">
+      <div class="info-card-icon">⏱️</div>
+      <div class="info-card-label">Durasi</div>
+      <div class="info-card-value"><%= package.duration %></div>
+    </div>
+    
+    <div class="info-card">
+      <div class="info-card-icon">�</div>
+      <div class="info-card-label">Jarak</div>
+      <div class="info-card-value"><%= package.distance %></div>
+    </div>
+    
+    <div class="info-card">
+      <div class="info-card-icon">⚠️</div>
+      <div class="info-card-label">Tingkat Kesulitan</div>
+      <div class="info-card-value"><%= package.difficulty %></div>
+    </div>
+  </div>
+  
+  <div class="package-description">
+    <h2>� Deskripsi Paket</h2>
+    <p><%= package.description %></p>
+    
+    <h3>Yang Termasuk dalam Paket:</h3>
+    <ul>
+      <li>✅ Tiket masuk kawasan</li>
+      <li>✅ Pemandu lokal berpengalaman</li>
+      <li>✅ Asuransi perjalanan</li>
+      <li>✅ Sertifikat pendakian</li>
+      <li>✅ Dokumentasi foto</li>
+    </ul>
+    
+    <h3>Yang Perlu Disiapkan:</h3>
+    <ul>
+      <li>� KTP/Identitas diri</li>
+      <li>🎒 Perlengkapan pribadi (tas carrier, sleeping bag, dll)</li>
+      <li>� Obat-obatan pribadi</li>
+      <li>🍱 Bekal makanan dan minuman</li>
+      <li>� Pakaian hangat dan tahan cuaca</li>
+    </ul>
+  </div>
+  
+  <div class="booking-section">
+    <h2>Siap untuk Petualangan?</h2>
+    <p>Pesan sekarang dan mulai perjalanan hiking Anda!</p>
+    <div style="margin-top: 20px;">
+      <a href="/" class="btn-back">← Kembali</a>
+      <a href="/booking/step1/<%= package.id %>" class="btn-book-now">
+        🎒 Pesan Sekarang
+      </a>
+    </div>
+  </div>
+</div>
+

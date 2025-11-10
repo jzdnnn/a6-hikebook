@@ -1,0 +1,247 @@
+<!-- My Bookings Page -->
+<div style="max-width: 1200px; margin: 0 auto; padding: 30px 20px;">
+  <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 30px;">
+    <h1>My Bookings</h1>
+    <a href="/" class="btn-primary" style="padding: 10px 20px; background: #2c5f2d; color: white; text-decoration: none; border-radius: 8px;">
+      Booking Baru
+    </a>
+  </div>
+
+  <% if (bookings.length === 0) { %>
+    <div style="text-align: center; padding: 60px 20px; background: white; border-radius: 12px;">
+      <h3 style="color: #666; margin-bottom: 10px;">Belum ada booking</h3>
+      <p style="color: #999;">Anda belum memiliki booking apapun. Mulai booking sekarang!</p>
+      <a href="/" style="display: inline-block; margin-top: 20px; padding: 12px 30px; background: #2c5f2d; color: white; text-decoration: none; border-radius: 8px;">
+        Lihat Paket Hiking
+      </a>
+    </div>
+  <% } else { %>
+    <div class="bookings-grid">
+      <% bookings.forEach(booking => { %>
+        <div class="booking-card">
+          <div class="booking-header">
+            <div>
+              <h3><%= booking.bookingNumber %></h3>
+              <p class="booking-date">Dibuat: <%= new Date(booking.createdAt).toLocaleDateString('id-ID') %></p>
+            </div>
+            <span class="status-badge <%= booking.bookingStatus %>">
+              <%= booking.bookingStatus %>
+            </span>
+          </div>
+
+          <div class="booking-details">
+            <% if (booking.hikingPackage) { %>
+              <div class="detail-item">
+                <strong>Paket:</strong> <%= booking.hikingPackage.name %>
+              </div>
+            <% } %>
+            <% if (booking.basecamp) { %>
+              <div class="detail-item">
+                <strong>Basecamp:</strong> <%= booking.basecamp.name %>
+              </div>
+            <% } %>
+            <div class="detail-item">
+              <strong>Tanggal Hiking:</strong> <%= new Date(booking.hikingDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+            </div>
+            <div class="detail-item">
+              <strong>Jumlah Peserta:</strong> <%= booking.numberOfPeople %> orang
+            </div>
+            <div class="detail-item">
+              <strong>Total Harga:</strong> Rp <%= booking.totalPrice.toLocaleString('id-ID') %>
+            </div>
+            <div class="detail-item">
+              <strong>Status Pembayaran:</strong> 
+              <span class="payment-status <%= booking.paymentStatus %>">
+                <%= booking.paymentStatus %>
+              </span>
+            </div>
+          </div>
+
+          <div class="booking-actions">
+            <a href="/booking/success/<%= booking.id %>" class="btn-view">
+              Lihat Detail
+            </a>
+            <% if (booking.bookingStatus === 'pending' || booking.bookingStatus === 'confirmed') { %>
+              <a href="/booking/edit/<%= booking.id %>" class="btn-edit">
+                Edit
+              </a>
+              <form action="/booking/delete/<%= booking.id %>" method="POST" style="display: inline;" onsubmit="return confirm('Yakin ingin membatalkan booking ini?')">
+                <button type="submit" class="btn-delete">
+                  Cancel
+                </button>
+              </form>
+            <% } %>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  <% } %>
+</div>
+
+<style>
+  .bookings-grid {
+    display: grid;
+    gap: 20px;
+  }
+
+  .booking-card {
+    background: white;
+    border-radius: 12px;
+    padding: 25px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s, box-shadow 0.3s;
+  }
+
+  .booking-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+  }
+
+  .booking-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 20px;
+    padding-bottom: 15px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .booking-header h3 {
+    margin: 0 0 5px 0;
+    color: #2c5f2d;
+    font-size: 1.3rem;
+  }
+
+  .booking-date {
+    margin: 0;
+    color: #999;
+    font-size: 0.9rem;
+  }
+
+  .status-badge {
+    padding: 6px 15px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: capitalize;
+  }
+
+  .status-badge.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .status-badge.confirmed {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .status-badge.cancelled {
+    background: #f8d7da;
+    color: #721c24;
+  }
+
+  .status-badge.completed {
+    background: #d1ecf1;
+    color: #0c5460;
+  }
+
+  .booking-details {
+    margin-bottom: 20px;
+  }
+
+  .detail-item {
+    padding: 8px 0;
+    color: #555;
+    font-size: 0.95rem;
+  }
+
+  .detail-item strong {
+    color: #333;
+    min-width: 150px;
+    display: inline-block;
+  }
+
+  .payment-status {
+    padding: 3px 10px;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 500;
+  }
+
+  .payment-status.pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+
+  .payment-status.paid {
+    background: #d4edda;
+    color: #155724;
+  }
+
+  .booking-actions {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+
+  .btn-view, .btn-edit, .btn-delete {
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    cursor: pointer;
+    border: none;
+    transition: all 0.3s;
+  }
+
+  .btn-view {
+    background: #2c5f2d;
+    color: white;
+  }
+
+  .btn-view:hover {
+    background: #1e4620;
+  }
+
+  .btn-edit {
+    background: #17a2b8;
+    color: white;
+  }
+
+  .btn-edit:hover {
+    background: #138496;
+  }
+
+  .btn-delete {
+    background: #dc3545;
+    color: white;
+  }
+
+  .btn-delete:hover {
+    background: #c82333;
+  }
+
+  @media (max-width: 768px) {
+    .booking-header {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .booking-actions {
+      flex-direction: column;
+    }
+
+    .btn-view, .btn-edit, .btn-delete {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>
+
+<% if (typeof deleted !== 'undefined' && deleted === 'true') { %>
+  <script>
+    alert('Booking berhasil dibatalkan!');
+  </script>
+<% } %>

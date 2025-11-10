@@ -1,0 +1,160 @@
+﻿<!-- Hero Component -->
+<%- include('components/hero', {
+  heroTitle: 'Tentang HikeBook',
+  heroSubtitle: 'Platform booking pendakian online terpercaya di Indonesia',
+  heroVariant: 'minimal',
+  heroShowButton: false
+}) %>
+
+<div style="max-width: 800px; margin: 0 auto;">
+  <%- include('components/card', {
+    cardVariant: 'simple',
+    cardContent: `
+      <p>HikeBook adalah platform booking pendakian online terpercaya yang memudahkan Anda untuk merencanakan dan memesan perjalanan pendakian ke berbagai gunung di Indonesia.</p>
+    `
+  }) %>
+
+  <h2>Mengapa Memilih HikeBook?</h2>
+  
+  <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 30px;">
+    <%- include('components/card', {
+      cardTitle: 'Mudah & Cepat',
+      cardBadge: '✓',
+      cardBadgeColor: 'success',
+      cardContent: '<p>Booking pendakian hanya dalam beberapa klik</p>',
+      cardVariant: 'simple'
+    }) %>
+    
+    <%- include('components/card', {
+      cardTitle: 'Terpercaya',
+      cardBadge: '✓',
+      cardBadgeColor: 'success',
+      cardContent: '<p>Bekerja sama dengan guide dan operator pendakian bersertifikat</p>',
+      cardVariant: 'simple'
+    }) %>
+    
+    <%- include('components/card', {
+      cardTitle: 'Lengkap',
+      cardBadge: '✓',
+      cardBadgeColor: 'success',
+      cardContent: '<p>Informasi detail tentang setiap jalur pendakian</p>',
+      cardVariant: 'simple'
+    }) %>
+    
+    <%- include('components/card', {
+      cardTitle: 'Aman',
+      cardBadge: '✓',
+      cardBadgeColor: 'success',
+      cardContent: '<p>Sistem pembayaran yang aman dan terpercaya</p>',
+      cardVariant: 'simple'
+    }) %>
+  </div>
+
+  <h2>Layanan Kami</h2>
+  
+  <div class="card-component featured">
+    <div class="card-body">
+      <p>Saat ini kami fokus melayani pendakian di <strong>Gunung Gede Pangrango</strong> dengan berbagai pilihan jalur yang disesuaikan dengan tingkat kesulitan dan preferensi Anda.</p>
+      
+      <div style="margin-top: 20px;">
+        <%- include('components/dropdown', {
+          dropdownLabel: 'Pilih Gunung yang Anda Minati:',
+          dropdownPlaceholder: 'Pilih gunung...',
+          dropdownVariant: 'primary',
+          dropdownOptions: [
+            { value: 'gede', label: 'Gunung Gede Pangrango' },
+            { value: 'semeru', label: 'Gunung Semeru (Segera Hadir)' },
+            { value: 'rinjani', label: 'Gunung Rinjani (Segera Hadir)' },
+            '---',
+            { value: 'other', label: 'Gunung Lainnya (Segera Hadir)' }
+          ]
+        }) %>
+      </div>
+    </div>
+  </div>
+  
+  <div style="margin-top: 30px; text-align: center;">
+    <%- include('components/button', {
+      btnText: 'Mulai Booking Sekarang',
+      btnVariant: 'primary',
+      btnSize: 'large',
+      btnIcon: '�',
+      btnLink: '/'
+    }) %>
+  </div>
+</div>
+
+<style>
+  .card-component {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    margin-bottom: 20px;
+  }
+  
+  .card-component.hoverable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-component.featured {
+    border: 2px solid #2c5f2d;
+    box-shadow: 0 4px 12px rgba(44, 95, 45, 0.15);
+  }
+  
+  .card-component.simple {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .card-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #2c5f2d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .card-component.simple .card-header {
+    background: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1.3rem;
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .card-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  
+  .card-badge.success { background: #d4edda; color: #155724; }
+  
+  .card-body {
+    padding: 20px;
+    flex-grow: 1;
+    color: #495057;
+    line-height: 1.6;
+  }
+  
+  .card-component.simple .card-body {
+    padding: 15px 20px;
+  }
+</style>

@@ -1,0 +1,203 @@
+﻿<%
+  // Default values
+  const variant = locals.btnVariant || 'primary'; // primary, secondary, success, danger, warning, info, outline-primary, outline-secondary
+  const size = locals.btnSize || 'medium'; // small, medium, large, block
+  const text = locals.btnText || 'Button';
+  const link = locals.btnLink || '#';
+  const icon = locals.btnIcon || '';
+  const disabled = locals.btnDisabled || false;
+  const type = locals.btnType || 'link'; // link, button, submit
+  const customClass = locals.btnClass || '';
+  const iconPosition = locals.btnIconPosition || 'left'; // left, right
+%>
+
+<style>
+  .btn-component {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  
+  /* Sizes */
+  .btn-component.small {
+    padding: 8px 16px;
+    font-size: 0.875rem;
+  }
+  
+  .btn-component.large {
+    padding: 16px 32px;
+    font-size: 1.125rem;
+  }
+  
+  .btn-component.block {
+    display: flex;
+    width: 100%;
+  }
+  
+  /* Primary Variant */
+  .btn-component.primary {
+    background: #2c5f2d;
+    color: white;
+    box-shadow: 0 2px 4px rgba(44, 95, 45, 0.2);
+  }
+  
+  .btn-component.primary:hover:not(:disabled) {
+    background: #1e4620;
+    box-shadow: 0 4px 8px rgba(44, 95, 45, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Secondary Variant */
+  .btn-component.secondary {
+    background: #6c757d;
+    color: white;
+    box-shadow: 0 2px 4px rgba(108, 117, 125, 0.2);
+  }
+  
+  .btn-component.secondary:hover:not(:disabled) {
+    background: #5a6268;
+    box-shadow: 0 4px 8px rgba(108, 117, 125, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Success Variant */
+  .btn-component.success {
+    background: #28a745;
+    color: white;
+    box-shadow: 0 2px 4px rgba(40, 167, 69, 0.2);
+  }
+  
+  .btn-component.success:hover:not(:disabled) {
+    background: #218838;
+    box-shadow: 0 4px 8px rgba(40, 167, 69, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Danger Variant */
+  .btn-component.danger {
+    background: #dc3545;
+    color: white;
+    box-shadow: 0 2px 4px rgba(220, 53, 69, 0.2);
+  }
+  
+  .btn-component.danger:hover:not(:disabled) {
+    background: #c82333;
+    box-shadow: 0 4px 8px rgba(220, 53, 69, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Warning Variant */
+  .btn-component.warning {
+    background: #ffc107;
+    color: #212529;
+    box-shadow: 0 2px 4px rgba(255, 193, 7, 0.2);
+  }
+  
+  .btn-component.warning:hover:not(:disabled) {
+    background: #e0a800;
+    box-shadow: 0 4px 8px rgba(255, 193, 7, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Info Variant */
+  .btn-component.info {
+    background: #17a2b8;
+    color: white;
+    box-shadow: 0 2px 4px rgba(23, 162, 184, 0.2);
+  }
+  
+  .btn-component.info:hover:not(:disabled) {
+    background: #138496;
+    box-shadow: 0 4px 8px rgba(23, 162, 184, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  /* Outline Variants */
+  .btn-component.outline-primary {
+    background: transparent;
+    color: #2c5f2d;
+    border: 2px solid #2c5f2d;
+    box-shadow: none;
+  }
+  
+  .btn-component.outline-primary:hover:not(:disabled) {
+    background: #2c5f2d;
+    color: white;
+  }
+  
+  .btn-component.outline-secondary {
+    background: transparent;
+    color: #6c757d;
+    border: 2px solid #6c757d;
+    box-shadow: none;
+  }
+  
+  .btn-component.outline-secondary:hover:not(:disabled) {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-component.outline-danger {
+    background: transparent;
+    color: #dc3545;
+    border: 2px solid #dc3545;
+    box-shadow: none;
+  }
+  
+  .btn-component.outline-danger:hover:not(:disabled) {
+    background: #dc3545;
+    color: white;
+  }
+  
+  /* Disabled State */
+  .btn-component:disabled,
+  .btn-component.disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    transform: none !important;
+  }
+  
+  /* Icon */
+  .btn-icon {
+    font-size: 1.2em;
+  }
+</style>
+
+<% if (type === 'link') { %>
+  <a href="<%= link %>" 
+     class="btn-component <%= variant %> <%= size %> <%= customClass %> <%= disabled ? 'disabled' : '' %>"
+     <%= disabled ? 'aria-disabled="true"' : '' %>>
+    <% if (icon && iconPosition === 'left') { %>
+      <span class="btn-icon"><%= icon %></span>
+    <% } %>
+    <%= text %>
+    <% if (icon && iconPosition === 'right') { %>
+      <span class="btn-icon"><%= icon %></span>
+    <% } %>
+  </a>
+<% } else { %>
+  <button type="<%= type %>" 
+          class="btn-component <%= variant %> <%= size %> <%= customClass %>"
+          <%= disabled ? 'disabled' : '' %>>
+    <% if (icon && iconPosition === 'left') { %>
+      <span class="btn-icon"><%= icon %></span>
+    <% } %>
+    <%= text %>
+    <% if (icon && iconPosition === 'right') { %>
+      <span class="btn-icon"><%= icon %></span>
+    <% } %>
+  </button>
+<% } %>
+

@@ -1,0 +1,410 @@
+﻿<style>
+  .booking-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .booking-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  .booking-progress::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+  }
+  
+  .progress-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+  
+  .progress-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #e0e0e0;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    transition: all 0.3s ease;
+  }
+  
+  .progress-step.completed .progress-circle {
+    background: #97bc62;
+    border-color: #97bc62;
+    color: white;
+  }
+  
+  .progress-step.active .progress-circle {
+    background: #2c5f2d;
+    border-color: #2c5f2d;
+    color: white;
+  }
+  
+  .progress-label {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .progress-step.active .progress-label {
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  .booking-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+  }
+  
+  .customer-info {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+  }
+  
+  .customer-info p {
+    margin: 5px 0;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+  }
+  
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 600;
+    color: #333;
+  }
+  
+  .form-control {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 6px;
+    font-size: 1em;
+    transition: border-color 0.3s ease;
+    box-sizing: border-box;
+  }
+  
+  .form-control:focus {
+    outline: none;
+    border-color: #2c5f2d;
+  }
+  
+  .participant-item {
+    background: #f8f9fa;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 15px;
+  }
+  
+  .participant-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+  
+  .participant-number {
+    font-weight: bold;
+    color: #2c5f2d;
+  }
+  
+  .btn-remove {
+    background: #dc3545;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 0.9em;
+  }
+  
+  .btn-remove:hover {
+    background: #c82333;
+  }
+  
+  .btn-add-participant {
+    background: #97bc62;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 20px;
+    font-size: 1em;
+  }
+  
+  .btn-add-participant:hover {
+    background: #7da04e;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .btn-primary {
+    background: #2c5f2d;
+    color: white;
+    flex: 1;
+  }
+  
+  .btn-primary:hover {
+    background: #1e4520;
+  }
+  
+  .input-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+</style>
+
+<div class="booking-container">
+  <!-- Progress Bar -->
+  <div class="booking-progress">
+    <div class="progress-step completed">
+      <div class="progress-circle">✓</div>
+      <div class="progress-label">Data Diri</div>
+    </div>
+    <div class="progress-step active">
+      <div class="progress-circle">2</div>
+      <div class="progress-label">Data Kelompok</div>
+    </div>
+    <div class="progress-step">
+      <div class="progress-circle">3</div>
+      <div class="progress-label">Review</div>
+    </div>
+    <div class="progress-step">
+      <div class="progress-circle">4</div>
+      <div class="progress-label">Payment</div>
+    </div>
+  </div>
+  
+  <div class="booking-card">
+    <div class="customer-info">
+      <strong>� Pemesan:</strong> <%= bookingData.customerName %>
+      <br><strong>� Email:</strong> <%= bookingData.customerEmail %>
+      <br><strong>� Phone:</strong> <%= bookingData.customerPhone %>
+      <br><strong>� Tanggal:</strong> <%= new Date(bookingData.hikingDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+    </div>
+    
+    <h2>� Data Kelompok Pendaki</h2>
+    <p>Masukkan jumlah peserta dan data anggota kelompok yang akan ikut mendaki.</p>
+    
+    <form action="/booking/step2" method="POST" id="groupForm">
+      <div class="form-group">
+        <label for="numberOfPeople">
+          Jumlah Peserta <span style="color: #dc3545;">*</span>
+        </label>
+        <input 
+          type="number" 
+          id="numberOfPeople" 
+          name="numberOfPeople" 
+          class="form-control" 
+          min="1" 
+          max="20"
+          value="1"
+          required
+        />
+      </div>
+      
+      <div id="participantsContainer">
+        <div class="participant-item">
+          <div class="participant-header">
+            <span class="participant-number">Peserta #1 (Pemesan)</span>
+          </div>
+          <div class="input-group">
+            <div class="form-group">
+              <label>Nama Lengkap</label>
+              <input 
+                type="text" 
+                class="form-control participant-name" 
+                value="<%= bookingData.customerName %>"
+                readonly
+              />
+            </div>
+            <div class="form-group">
+              <label>Usia</label>
+              <input 
+                type="number" 
+                class="form-control participant-age" 
+                min="10" 
+                max="100"
+                required
+              />
+            </div>
+          </div>
+          <div class="form-group">
+            <label>No. Identitas (KTP/SIM)</label>
+            <input 
+              type="text" 
+              class="form-control participant-id" 
+              placeholder="3201xxxxxx"
+              required
+            />
+          </div>
+        </div>
+      </div>
+      
+      <button type="button" class="btn-add-participant" id="btnAddParticipant">
+        ➕ Tambah Peserta
+      </button>
+      
+      <input type="hidden" name="participants" id="participantsData" />
+      
+      <div class="form-actions">
+        <a href="/booking/step1/<%= bookingData.packageId %>" class="btn btn-secondary">
+          ← Kembali
+        </a>
+        <button type="submit" class="btn btn-primary">
+          Lanjut ke Review →
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  let participantCount = 1;
+  
+  document.getElementById('numberOfPeople').addEventListener('change', function() {
+    const count = parseInt(this.value);
+    updateParticipantFields(count);
+  });
+  
+  document.getElementById('btnAddParticipant').addEventListener('click', function() {
+    const numberOfPeople = parseInt(document.getElementById('numberOfPeople').value);
+    if (participantCount < numberOfPeople) {
+      addParticipantField();
+    } else {
+      alert('Jumlah peserta sudah mencapai batas yang ditentukan');
+    }
+  });
+  
+  function updateParticipantFields(count) {
+    const container = document.getElementById('participantsContainer');
+    const currentCount = container.querySelectorAll('.participant-item').length;
+    
+    if (count > currentCount) {
+      for (let i = currentCount; i < count; i++) {
+        addParticipantField();
+      }
+    } else if (count < currentCount) {
+      const items = container.querySelectorAll('.participant-item');
+      for (let i = currentCount - 1; i >= count; i--) {
+        if (i > 0) { // Keep first participant (pemesan)
+          items[i].remove();
+          participantCount--;
+        }
+      }
+    }
+  }
+  
+  function addParticipantField() {
+    participantCount++;
+    const container = document.getElementById('participantsContainer');
+    const div = document.createElement('div');
+    div.className = 'participant-item';
+    div.innerHTML = `
+      <div class="participant-header">
+        <span class="participant-number">Peserta #${participantCount}</span>
+        <button type="button" class="btn-remove" onclick="removeParticipant(this)">Hapus</button>
+      </div>
+      <div class="input-group">
+        <div class="form-group">
+          <label>Nama Lengkap</label>
+          <input type="text" class="form-control participant-name" required />
+        </div>
+        <div class="form-group">
+          <label>Usia</label>
+          <input type="number" class="form-control participant-age" min="10" max="100" required />
+        </div>
+      </div>
+      <div class="form-group">
+        <label>No. Identitas (KTP/SIM)</label>
+        <input type="text" class="form-control participant-id" placeholder="3201xxxxxx" required />
+      </div>
+    `;
+    container.appendChild(div);
+  }
+  
+  function removeParticipant(btn) {
+    btn.closest('.participant-item').remove();
+    participantCount--;
+    document.getElementById('numberOfPeople').value = participantCount;
+    renumberParticipants();
+  }
+  
+  function renumberParticipants() {
+    const items = document.querySelectorAll('.participant-item');
+    items.forEach((item, index) => {
+      item.querySelector('.participant-number').textContent = 
+        `Peserta #${index + 1}${index === 0 ? ' (Pemesan)' : ''}`;
+    });
+  }
+  
+  document.getElementById('groupForm').addEventListener('submit', function(e) {
+    e.preventDefault();
+    
+    // Collect participant data
+    const participants = [];
+    const items = document.querySelectorAll('.participant-item');
+    
+    items.forEach((item, index) => {
+      participants.push({
+        name: item.querySelector('.participant-name').value,
+        age: item.querySelector('.participant-age').value,
+        idNumber: item.querySelector('.participant-id').value
+      });
+    });
+    
+    document.getElementById('participantsData').value = JSON.stringify(participants);
+    this.submit();
+  });
+</script>
+

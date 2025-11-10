@@ -1,0 +1,606 @@
+﻿<header>
+  <div class="logo">
+    <a href="/">
+      <span class="logo-text">HikeBook</span>
+    </a>
+  </div>
+  
+  <!-- Search Bar -->
+  <div class="search-container">
+    <input type="text" class="search-input" placeholder="Cari jalur, basecamp, atau paket...">
+    <button class="search-btn">
+      <span>Search</span>
+    </button>
+  </div>
+  
+  <nav class="main-nav">
+    <a href="/" class="nav-link active">
+      <span>Home</span>
+    </a>
+    <a href="/info-jalur" class="nav-link">
+      <span>Informasi Jalur</span>
+    </a>
+    <a href="/my-bookings" class="nav-link">
+      <span>My Bookings</span>
+    </a>
+    <a href="/rules" class="nav-link">
+      <span>Peraturan</span>
+    </a>
+  </nav>
+  
+  <div class="header-actions">
+    <div class="notification-container">
+      <button class="icon-btn notification-btn">
+        <span class="icon">�</span>
+        <span class="badge">3</span>
+      </button>
+      <div class="notification-dropdown">
+        <div class="notification-header">
+          <h4>Notifikasi</h4>
+          <a href="#" class="mark-read">Tandai semua dibaca</a>
+        </div>
+        <div class="notification-list">
+          <div class="notification-item unread">
+            <span class="notif-icon">✓</span>
+            <div class="notif-content">
+              <p class="notif-text">Booking Anda untuk Jalur Cibodas telah dikonfirmasi</p>
+              <span class="notif-time">2 jam yang lalu</span>
+            </div>
+          </div>
+          <div class="notification-item unread">
+            <span class="notif-icon">!</span>
+            <div class="notif-content">
+              <p class="notif-text">Cuaca buruk diprediksi untuk tanggal booking Anda</p>
+              <span class="notif-time">5 jam yang lalu</span>
+            </div>
+          </div>
+          <div class="notification-item">
+            <span class="notif-icon">$</span>
+            <div class="notif-content">
+              <p class="notif-text">Diskon 20% untuk booking di bulan ini!</p>
+              <span class="notif-time">1 hari yang lalu</span>
+            </div>
+          </div>
+        </div>
+        <div class="notification-footer">
+          <a href="/notifications">Lihat Semua Notifikasi</a>
+        </div>
+      </div>
+    </div>
+    
+    <!-- User Menu -->
+    <div class="user-menu-container">
+      <button class="user-menu-btn">
+        <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5f2d&color=fff" alt="User" class="user-avatar">
+        <span class="user-name">John Doe</span>
+        <span class="dropdown-arrow">▼</span>
+      </button>
+      <div class="user-dropdown">
+        <div class="user-info">
+          <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5f2d&color=fff" alt="User" class="user-avatar-large">
+          <div>
+            <h4>John Doe</h4>
+            <p>john.doe@email.com</p>
+          </div>
+        </div>
+        <div class="dropdown-divider"></div>
+        <a href="/profile" class="dropdown-item">
+          <span class="item-icon">�</span>
+          <span>Profil Saya</span>
+        </a>
+        <a href="/bookings" class="dropdown-item">
+          <span class="item-icon">�</span>
+          <span>Booking Saya</span>
+        </a>
+        <a href="/favorites" class="dropdown-item">
+          <span class="item-icon">♥</span>
+          <span>Favorit</span>
+        </a>
+        <a href="/settings" class="dropdown-item">
+          <span class="item-icon">⚙</span>
+          <span>Pengaturan</span>
+        </a>
+        <div class="dropdown-divider"></div>
+        <a href="/logout" class="dropdown-item logout">
+          <span class="item-icon">→</span>
+          <span>Keluar</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<style>
+  header {
+    display: grid;
+    grid-template-columns: auto 1fr auto auto;
+    grid-template-areas: "logo search nav actions";
+    align-items: center;
+    gap: 20px;
+    padding: 15px 40px;
+    background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+  }
+  
+  /* Logo */
+  .logo {
+    grid-area: logo;
+  }
+  
+  .logo a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: white;
+    font-weight: bold;
+    font-size: 1.5rem;
+    transition: transform 0.3s;
+    white-space: nowrap;
+  }
+  
+  .logo a:hover {
+    transform: scale(1.05);
+  }
+  
+  .logo-icon {
+    font-size: 2rem;
+  }
+  
+  /* Search Bar */
+  .search-container {
+    grid-area: search;
+    width: 100%;
+    max-width: 450px;
+    display: flex;
+    background: rgba(255,255,255,0.95);
+    border-radius: 25px;
+    overflow: hidden;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  }
+  
+  .search-input {
+    flex: 1;
+    padding: 12px 20px;
+    border: none;
+    outline: none;
+    font-size: 0.95rem;
+    background: transparent;
+  }
+  
+  .search-btn {
+    padding: 12px 20px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: background 0.3s;
+  }
+  
+  .search-btn:hover {
+    background: rgba(44, 95, 45, 0.1);
+  }
+  
+  /* Navigation */
+  .main-nav {
+    grid-area: nav;
+    display: flex;
+    gap: 5px;
+    align-items: center;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 16px;
+    color: rgba(255,255,255,0.9);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: all 0.3s;
+    font-weight: 500;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+  
+  .nav-link:hover {
+    background: rgba(255,255,255,0.15);
+    color: white;
+  }
+  
+  .nav-link.active {
+    background: rgba(255,255,255,0.25);
+    color: white;
+  }
+  
+  .nav-icon {
+    font-size: 1.1rem;
+  }
+  
+  /* Header Actions */
+  .header-actions {
+    grid-area: actions;
+    display: flex;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  /* Icon Button */
+  .icon-btn {
+    position: relative;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s;
+  }
+  
+  .icon-btn:hover {
+    background: rgba(255,255,255,0.3);
+    transform: scale(1.1);
+  }
+  
+  .icon-btn .icon {
+    font-size: 1.3rem;
+  }
+  
+  .badge {
+    position: absolute;
+    top: -2px;
+    right: -2px;
+    background: #dc3545;
+    color: white;
+    font-size: 0.7rem;
+    padding: 2px 6px;
+    border-radius: 10px;
+    font-weight: bold;
+  }
+  
+  /* Notification Dropdown */
+  .notification-container {
+    position: relative;
+  }
+  
+  .notification-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 350px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+  }
+  
+  .notification-container.open .notification-dropdown {
+    display: block;
+    animation: slideDown 0.3s ease;
+  }
+  
+  .notification-header {
+    padding: 15px 20px;
+    border-bottom: 1px solid #e0e0e0;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .notification-header h4 {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1.1rem;
+  }
+  
+  .mark-read {
+    color: #2c5f2d;
+    font-size: 0.85rem;
+    text-decoration: none;
+  }
+  
+  .notification-list {
+    max-height: 400px;
+    overflow-y: auto;
+  }
+  
+  .notification-item {
+    display: flex;
+    gap: 12px;
+    padding: 15px 20px;
+    border-bottom: 1px solid #f0f0f0;
+    transition: background 0.2s;
+  }
+  
+  .notification-item:hover {
+    background: #f8f9fa;
+  }
+  
+  .notification-item.unread {
+    background: #f0f8ff;
+  }
+  
+  .notif-icon {
+    font-size: 1.5rem;
+  }
+  
+  .notif-content {
+    flex: 1;
+  }
+  
+  .notif-text {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 0.9rem;
+  }
+  
+  .notif-time {
+    color: #999;
+    font-size: 0.8rem;
+  }
+  
+  .notification-footer {
+    padding: 12px 20px;
+    text-align: center;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .notification-footer a {
+    color: #2c5f2d;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+  }
+  
+  /* User Menu */
+  .user-menu-container {
+    position: relative;
+  }
+  
+  .user-menu-btn {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 6px 12px 6px 6px;
+    background: rgba(255,255,255,0.2);
+    border: none;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: all 0.3s;
+  }
+  
+  .user-menu-btn:hover {
+    background: rgba(255,255,255,0.3);
+  }
+  
+  .user-avatar {
+    width: 35px;
+    height: 35px;
+    border-radius: 50%;
+    border: 2px solid white;
+  }
+  
+  .user-name {
+    color: white;
+    font-weight: 500;
+    font-size: 0.95rem;
+  }
+  
+  .dropdown-arrow {
+    color: white;
+    font-size: 0.7rem;
+    transition: transform 0.3s;
+  }
+  
+  .user-menu-container.open .dropdown-arrow {
+    transform: rotate(180deg);
+  }
+  
+  .user-dropdown {
+    position: absolute;
+    top: calc(100% + 10px);
+    right: 0;
+    width: 280px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    display: none;
+    z-index: 1000;
+  }
+  
+  .user-menu-container.open .user-dropdown {
+    display: block;
+    animation: slideDown 0.3s ease;
+  }
+  
+  .user-info {
+    padding: 20px;
+    display: flex;
+    gap: 15px;
+    align-items: center;
+  }
+  
+  .user-avatar-large {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: 2px solid #2c5f2d;
+  }
+  
+  .user-info h4 {
+    margin: 0 0 5px 0;
+    color: #333;
+    font-size: 1rem;
+  }
+  
+  .user-info p {
+    margin: 0;
+    color: #666;
+    font-size: 0.85rem;
+  }
+  
+  .dropdown-divider {
+    height: 1px;
+    background: #e0e0e0;
+    margin: 5px 0;
+  }
+  
+  .dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 20px;
+    color: #333;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+  
+  .dropdown-item:hover {
+    background: #f8f9fa;
+  }
+  
+  .dropdown-item.logout {
+    color: #dc3545;
+  }
+  
+  .dropdown-item.logout:hover {
+    background: #fff5f5;
+  }
+  
+  .item-icon {
+    font-size: 1.2rem;
+    width: 24px;
+    text-align: center;
+  }
+  
+  @keyframes slideDown {
+    from {
+      opacity: 0;
+      transform: translateY(-10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive */
+  @media (max-width: 1200px) {
+    header {
+      grid-template-columns: auto 1fr auto;
+      gap: 20px;
+    }
+    
+    .main-nav {
+      display: none;
+    }
+    
+    .search-container {
+      max-width: 350px;
+    }
+  }
+  
+  @media (max-width: 1024px) {
+    header {
+      padding: 15px 25px;
+    }
+    
+    .search-container {
+      max-width: 300px;
+    }
+    
+    .user-name {
+      display: none;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    header {
+      grid-template-columns: auto 1fr auto;
+      padding: 12px 20px;
+      gap: 15px;
+    }
+    
+    .logo a {
+      font-size: 1.3rem;
+    }
+    
+    .logo-icon {
+      font-size: 1.5rem;
+    }
+    
+    .search-container {
+      display: none;
+    }
+    
+    .main-nav {
+      display: none;
+    }
+  }
+  
+  /* Responsive Design */
+  @media (max-width: 1200px) {
+    header {
+      grid-template-columns: auto 1fr auto;
+      grid-template-areas: 
+        "logo search actions"
+        "nav nav nav";
+      gap: 15px;
+    }
+    
+    .main-nav {
+      justify-content: center;
+      padding-top: 10px;
+      border-top: 1px solid rgba(255,255,255,0.2);
+    }
+  }
+  
+  @media (max-width: 768px) {
+    header {
+      padding: 15px 20px;
+    }
+    
+    .search-container {
+      max-width: 300px;
+    }
+    
+    .nav-link span {
+      display: none;
+    }
+    
+    .user-name {
+      display: none;
+    }
+  }
+</style>
+
+<script>
+  // Toggle notification dropdown
+  document.querySelector('.notification-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const container = this.closest('.notification-container');
+    container.classList.toggle('open');
+    document.querySelector('.user-menu-container').classList.remove('open');
+  });
+  
+  // Toggle user menu dropdown
+  document.querySelector('.user-menu-btn').addEventListener('click', function(e) {
+    e.stopPropagation();
+    const container = this.closest('.user-menu-container');
+    container.classList.toggle('open');
+    document.querySelector('.notification-container').classList.remove('open');
+  });
+  
+  // Close dropdowns when clicking outside
+  document.addEventListener('click', function() {
+    document.querySelector('.notification-container').classList.remove('open');
+    document.querySelector('.user-menu-container').classList.remove('open');
+  });
+</script>

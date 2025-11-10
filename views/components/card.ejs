@@ -1,0 +1,158 @@
+﻿<%
+  // Default values
+  const variant = locals.cardVariant || 'default'; // default, horizontal, featured, simple
+  const title = locals.cardTitle || '';
+  const content = locals.cardContent || '';
+  const image = locals.cardImage || '';
+  const badge = locals.cardBadge || '';
+  const badgeColor = locals.cardBadgeColor || 'primary';
+  const footer = locals.cardFooter || '';
+  const hoverable = locals.cardHoverable !== false;
+  const customClass = locals.cardClass || '';
+%>
+
+<style>
+  .card-component {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  .card-component.hoverable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-component.horizontal {
+    flex-direction: row;
+  }
+  
+  .card-component.featured {
+    border: 2px solid #2c5f2d;
+    box-shadow: 0 4px 12px rgba(44, 95, 45, 0.15);
+  }
+  
+  .card-component.simple {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .card-image {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    background: #f0f0f0;
+  }
+  
+  .card-component.horizontal .card-image {
+    width: 40%;
+    height: auto;
+  }
+  
+  .card-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #2c5f2d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .card-component.simple .card-header {
+    background: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1.3rem;
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .card-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  
+  .card-badge.primary { background: #2c5f2d; color: white; }
+  .card-badge.success { background: #d4edda; color: #155724; }
+  .card-badge.warning { background: #fff3cd; color: #856404; }
+  .card-badge.danger { background: #f8d7da; color: #721c24; }
+  .card-badge.info { background: #d1ecf1; color: #0c5460; }
+  
+  .card-body {
+    padding: 20px;
+    flex-grow: 1;
+    color: #495057;
+    line-height: 1.6;
+  }
+  
+  .card-component.simple .card-body {
+    padding: 15px 20px;
+  }
+  
+  .card-footer {
+    padding: 15px 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  .card-component.simple .card-footer {
+    background: transparent;
+  }
+  
+  @media (max-width: 768px) {
+    .card-component.horizontal {
+      flex-direction: column;
+    }
+    
+    .card-component.horizontal .card-image {
+      width: 100%;
+      height: 200px;
+    }
+  }
+</style>
+
+<div class="card-component <%= variant %> <%= hoverable ? 'hoverable' : '' %> <%= customClass %>">
+  <% if (image) { %>
+    <img src="<%= image %>" alt="<%= title %>" class="card-image">
+  <% } %>
+  
+  <% if (title || badge) { %>
+    <div class="card-header">
+      <% if (title) { %>
+        <h3 class="card-title"><%= title %></h3>
+      <% } %>
+      <% if (badge) { %>
+        <span class="card-badge <%= badgeColor %>"><%= badge %></span>
+      <% } %>
+    </div>
+  <% } %>
+  
+  <% if (content) { %>
+    <div class="card-body">
+      <%- content %>
+    </div>
+  <% } %>
+  
+  <% if (footer) { %>
+    <div class="card-footer">
+      <%- footer %>
+    </div>
+  <% } %>
+</div>
+

@@ -1,0 +1,406 @@
+﻿<style>
+  .booking-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .booking-progress {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  
+  .booking-progress::before {
+    content: '';
+    position: absolute;
+    top: 20px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: #e0e0e0;
+    z-index: 0;
+  }
+  
+  .progress-step {
+    text-align: center;
+    position: relative;
+    z-index: 1;
+    flex: 1;
+  }
+  
+  .progress-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: white;
+    border: 3px solid #e0e0e0;
+    margin: 0 auto 10px auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+  }
+  
+  .progress-step.completed .progress-circle {
+    background: #97bc62;
+    border-color: #97bc62;
+    color: white;
+  }
+  
+  .progress-step.active .progress-circle {
+    background: #2c5f2d;
+    border-color: #2c5f2d;
+    color: white;
+  }
+  
+  .progress-label {
+    font-size: 0.9em;
+    color: #666;
+  }
+  
+  .progress-step.active .progress-label {
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  .booking-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  .payment-summary {
+    background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
+    color: white;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .payment-amount {
+    font-size: 2.5em;
+    font-weight: bold;
+    margin: 15px 0;
+  }
+  
+  .payment-info {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+  }
+  
+  .payment-method-display {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 15px;
+    background: white;
+    border-radius: 8px;
+    margin: 20px 0;
+    font-size: 1.2em;
+    font-weight: bold;
+  }
+  
+  .bank-accounts {
+    margin: 20px 0;
+  }
+  
+  .bank-item {
+    background: white;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    padding: 15px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  .bank-name {
+    font-weight: bold;
+    font-size: 1.1em;
+    color: #2c5f2d;
+  }
+  
+  .account-number {
+    font-family: 'Courier New', monospace;
+    font-size: 1.1em;
+    font-weight: bold;
+  }
+  
+  .copy-btn {
+    background: #2c5f2d;
+    color: white;
+    border: none;
+    padding: 5px 15px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-left: 10px;
+  }
+  
+  .copy-btn:hover {
+    background: #1e4520;
+  }
+  
+  .instructions {
+    background: #fff3cd;
+    border-left: 4px solid #ffc107;
+    padding: 15px;
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+  
+  .instructions h4 {
+    margin-top: 0;
+    color: #856404;
+  }
+  
+  .instructions ol {
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+  
+  .instructions li {
+    margin: 5px 0;
+    color: #856404;
+  }
+  
+  .form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    gap: 15px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-secondary {
+    background: #6c757d;
+    color: white;
+  }
+  
+  .btn-secondary:hover {
+    background: #5a6268;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+    flex: 1;
+    font-size: 1.1em;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .countdown {
+    text-align: center;
+    padding: 15px;
+    background: #dc3545;
+    color: white;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+  
+  .countdown-timer {
+    font-size: 1.5em;
+    margin: 10px 0;
+  }
+</style>
+
+<div class="booking-container">
+  <!-- Progress Bar -->
+  <div class="booking-progress">
+    <div class="progress-step completed">
+      <div class="progress-circle">✓</div>
+      <div class="progress-label">Data Diri</div>
+    </div>
+    <div class="progress-step completed">
+      <div class="progress-circle">✓</div>
+      <div class="progress-label">Data Kelompok</div>
+    </div>
+    <div class="progress-step completed">
+      <div class="progress-circle">✓</div>
+      <div class="progress-label">Review</div>
+    </div>
+    <div class="progress-step active">
+      <div class="progress-circle">4</div>
+      <div class="progress-label">Payment</div>
+    </div>
+  </div>
+  
+  <!-- Countdown Timer -->
+  <div class="countdown">
+    ⏰ Selesaikan pembayaran dalam
+    <div class="countdown-timer" id="countdown">23:59:45</div>
+  </div>
+  
+  <div class="booking-card">
+    <!-- Payment Summary -->
+    <div class="payment-summary">
+      <h2 style="margin-top: 0;">� Total Pembayaran</h2>
+      <div class="payment-amount">Rp <%= totalPrice.toLocaleString('id-ID') %></div>
+      <p><%= package.name %> - <%= bookingData.numberOfPeople %> orang</p>
+    </div>
+    
+    <!-- Payment Method -->
+    <div class="payment-method-display">
+      <% if (bookingData.paymentMethod === 'transfer_bank') { %>
+        🏦 Transfer Bank
+      <% } else if (bookingData.paymentMethod === 'e_wallet') { %>
+        � E-Wallet
+      <% } else if (bookingData.paymentMethod === 'credit_card') { %>
+        � Kartu Kredit/Debit
+      <% } %>
+    </div>
+    
+    <!-- Bank Transfer Details -->
+    <% if (bookingData.paymentMethod === 'transfer_bank') { %>
+      <div class="payment-info">
+        <h3>� Rekening Tujuan Transfer</h3>
+        <p>Silakan transfer ke salah satu rekening di bawah ini:</p>
+        
+        <div class="bank-accounts">
+          <div class="bank-item">
+            <div>
+              <div class="bank-name">Bank BCA</div>
+              <div class="account-number">1234567890</div>
+              <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccount('1234567890')">� Copy</button>
+          </div>
+          
+          <div class="bank-item">
+            <div>
+              <div class="bank-name">Bank Mandiri</div>
+              <div class="account-number">0987654321</div>
+              <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccount('0987654321')">� Copy</button>
+          </div>
+          
+          <div class="bank-item">
+            <div>
+              <div class="bank-name">Bank BNI</div>
+              <div class="account-number">1122334455</div>
+              <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccount('1122334455')">� Copy</button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    
+    <!-- E-Wallet Details -->
+    <% if (bookingData.paymentMethod === 'e_wallet') { %>
+      <div class="payment-info">
+        <h3>� Nomor E-Wallet</h3>
+        <div class="bank-accounts">
+          <div class="bank-item">
+            <div>
+              <div class="bank-name">GoPay / DANA / OVO</div>
+              <div class="account-number">0812-3456-7890</div>
+              <div style="font-size: 0.9em; color: #666;">a.n. HikeBook Indonesia</div>
+            </div>
+            <button class="copy-btn" onclick="copyAccount('081234567890')">� Copy</button>
+          </div>
+        </div>
+      </div>
+    <% } %>
+    
+    <!-- Credit Card Details -->
+    <% if (bookingData.paymentMethod === 'credit_card') { %>
+      <div class="payment-info">
+        <h3>� Simulasi Pembayaran Kartu Kredit</h3>
+        <p>Dalam implementasi production, di sini akan muncul payment gateway (Midtrans, Xendit, dll)</p>
+        <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px;">
+          <p style="font-size: 1.2em;">� Payment Gateway Integration</p>
+          <p style="color: #666;">Untuk demo, klik tombol "Konfirmasi Pembayaran" di bawah</p>
+        </div>
+      </div>
+    <% } %>
+    
+    <!-- Instructions -->
+    <div class="instructions">
+      <h4>� Instruksi Pembayaran</h4>
+      <ol>
+        <li>Transfer sesuai jumlah <strong>TOTAL PEMBAYARAN</strong> di atas</li>
+        <li>Pastikan nominal transfer <strong>TEPAT</strong> agar mudah diverifikasi</li>
+        <li>Simpan bukti transfer Anda</li>
+        <li>Klik tombol "Konfirmasi Pembayaran" di bawah setelah transfer</li>
+        <li>Konfirmasi booking akan dikirim ke email Anda</li>
+      </ol>
+    </div>
+    
+    <!-- Booking Details -->
+    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
+      <strong>� Konfirmasi akan dikirim ke:</strong>
+      <p style="margin: 5px 0;"><%= bookingData.customerEmail %></p>
+      <strong>� WhatsApp:</strong>
+      <p style="margin: 5px 0;"><%= bookingData.customerPhone %></p>
+    </div>
+    
+    <!-- Action Buttons -->
+    <form action="/booking/process-payment" method="POST">
+      <div class="form-actions">
+        <a href="/booking/review" class="btn btn-secondary">
+          ← Kembali
+        </a>
+        <button type="submit" class="btn btn-success">
+          ✅ Konfirmasi Pembayaran
+        </button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // Countdown timer (24 hours)
+  let timeLeft = 24 * 60 * 60; // 24 hours in seconds
+  
+  function updateCountdown() {
+    const hours = Math.floor(timeLeft / 3600);
+    const minutes = Math.floor((timeLeft % 3600) / 60);
+    const seconds = timeLeft % 60;
+    
+    document.getElementById('countdown').textContent = 
+      `${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+    
+    if (timeLeft > 0) {
+      timeLeft--;
+      setTimeout(updateCountdown, 1000);
+    } else {
+      alert('Waktu pembayaran habis! Silakan buat booking baru.');
+      window.location.href = '/';
+    }
+  }
+  
+  updateCountdown();
+  
+  // Copy account number function
+  function copyAccount(accountNumber) {
+    navigator.clipboard.writeText(accountNumber).then(() => {
+      alert('Nomor rekening berhasil disalin: ' + accountNumber);
+    }).catch(err => {
+      console.error('Gagal menyalin:', err);
+    });
+  }
+</script>
+

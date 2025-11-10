@@ -1,0 +1,237 @@
+﻿<!-- Hero Component -->
+<%- include('components/hero', {
+  heroTitle: 'Selamat Datang di Website Booking Pendakian ' + mountainName,
+  heroSubtitle: 'Pilih jalur pendakian yang sesuai dengan kemampuan dan preferensi Anda',
+  heroVariant: 'centered',
+  heroShowButton: true,
+  heroButtonText: 'Lihat Semua Jalur',
+  heroButtonLink: '#packages'
+}) %>
+
+<!-- Mountain Info Card -->
+<div style="margin-bottom: 30px;">
+  <%- include('components/card', {
+    cardTitle: 'Tentang ' + mountainName,
+    cardContent: '<p>Gunung Gede Pangrango adalah kompleks gunung berapi stratovolcano yang terletak di Jawa Barat dengan ketinggian 2.958 mdpl (Gunung Gede) dan 3.019 mdpl (Gunung Pangrango). Taman Nasional Gunung Gede Pangrango menawarkan berbagai jalur pendakian dengan tingkat kesulitan yang berbeda.</p>',
+    cardVariant: 'simple',
+    cardHoverable: false
+  }) %>
+</div>
+
+<!-- Tracks Section -->
+<h2 id="packages">Jalur Pendakian</h2>
+
+<div class="package-grid">
+  <% packages.forEach(pkg => { %>
+    <div class="card-component default hoverable">
+      <div class="card-header">
+        <h3 class="card-title"><%= pkg.name %></h3>
+        <span class="card-badge <%= pkg.difficulty === 'Mudah' ? 'success' : (pkg.difficulty === 'Sedang' ? 'warning' : 'danger') %>">
+          <%= pkg.difficulty %>
+        </span>
+      </div>
+      
+      <div class="card-body">
+        <p class="description"><%= pkg.description %></p>
+        <div class="details">
+          <p><strong>Jarak:</strong> <%= pkg.distance %></p>
+          <p><strong>Durasi:</strong> <%= pkg.duration %></p>
+          <p class="price"><strong>Rp <%= pkg.price.toLocaleString('id-ID') %>/orang</strong></p>
+        </div>
+      </div>
+      
+      <div class="card-footer">
+        <a href="/package/<%= pkg.id %>" class="btn-component primary block">
+          <span class="btn-icon"></span>
+          Lihat Detail & Booking
+        </a>
+      </div>
+    </div>
+  <% }); %>
+</div>
+
+<!-- Basecamp Section -->
+<h2 id="basecamps" style="margin-top: 50px;">Basecamp</h2>
+
+<div class="package-grid">
+  <% if (typeof basecamps !== 'undefined' && basecamps.length > 0) { %>
+    <% basecamps.forEach(basecamp => { %>
+      <div class="card-component default hoverable">
+        <div class="card-header">
+          <h3 class="card-title"><%= basecamp.name %></h3>
+          <span class="card-badge info">
+            <span style="font-size: 1rem;"></span>
+          </span>
+        </div>
+        
+        <div class="card-body">
+          <p class="description"><%= basecamp.description %></p>
+          <div class="details">
+            <p><strong>Lokasi:</strong> <%= basecamp.address %></p>
+            <p><strong>Kapasitas:</strong> <%= basecamp.capacity %> orang</p>
+            <p><strong>Fasilitas:</strong> <%= basecamp.facilities.join(', ') %></p>
+            <p class="price"><strong>Rp <%= basecamp.pricePerNight.toLocaleString('id-ID') %>/orang/malam</strong></p>
+          </div>
+        </div>
+        
+        <div class="card-footer">
+          <a href="/booking?basecamp=<%= basecamp.id %>" class="btn-component primary block">
+            <span class="btn-icon"></span>
+            Lihat Detail & Booking
+          </a>
+        </div>
+      </div>
+    <% }); %>
+  <% } else { %>
+    <div class="card-component simple">
+      <div class="card-body">
+        <p style="text-align: center; color: #6c757d;">Belum ada data basecamp tersedia.</p>
+      </div>
+    </div>
+  <% } %>
+</div>
+
+<style>
+  .package-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 20px;
+    margin-bottom: 30px;
+  }
+  
+  .description {
+    color: #6c757d;
+    font-size: 0.95rem;
+    margin-bottom: 15px;
+  }
+  
+  .details p {
+    margin: 8px 0;
+    color: #495057;
+  }
+  
+  .price {
+    font-size: 1.2rem;
+    color: #2c5f2d;
+    margin-top: 15px;
+  }
+  
+  /* Card Component Styles */
+  .card-component {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 12px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: all 0.3s ease;
+    height: 100%;
+  }
+  
+  .card-component.hoverable:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  }
+  
+  .card-component.simple {
+    border: none;
+    box-shadow: none;
+  }
+  
+  .card-header {
+    padding: 20px;
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-bottom: 2px solid #2c5f2d;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+  }
+  
+  .card-component.simple .card-header {
+    background: transparent;
+    border-bottom: 1px solid #e0e0e0;
+    padding: 15px 20px;
+  }
+  
+  .card-title {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1.3rem;
+    font-weight: bold;
+    flex: 1;
+  }
+  
+  .card-badge {
+    padding: 5px 12px;
+    border-radius: 20px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+  
+  .card-badge.primary { background: #2c5f2d; color: white; }
+  .card-badge.success { background: #d4edda; color: #155724; }
+  .card-badge.warning { background: #fff3cd; color: #856404; }
+  .card-badge.danger { background: #f8d7da; color: #721c24; }
+  .card-badge.info { background: #d1ecf1; color: #0c5460; }
+  
+  .card-body {
+    padding: 20px;
+    flex-grow: 1;
+    color: #495057;
+    line-height: 1.6;
+  }
+  
+  .card-component.simple .card-body {
+    padding: 20px;
+  }
+  
+  .card-footer {
+    padding: 20px;
+    background: #f8f9fa;
+    border-top: 1px solid #e0e0e0;
+  }
+  
+  /* Button Component Styles */
+  .btn-component {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    font-size: 1rem;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    white-space: nowrap;
+    font-family: inherit;
+  }
+  
+  .btn-component.block {
+    display: flex;
+    width: 100%;
+  }
+  
+  .btn-component.primary {
+    background: #2c5f2d;
+    color: white;
+    box-shadow: 0 2px 4px rgba(44, 95, 45, 0.2);
+  }
+  
+  .btn-component.primary:hover {
+    background: #1e4620;
+    box-shadow: 0 4px 8px rgba(44, 95, 45, 0.3);
+    transform: translateY(-2px);
+  }
+  
+  .btn-icon {
+    font-size: 1.2em;
+  }
+</style>

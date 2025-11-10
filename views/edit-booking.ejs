@@ -1,0 +1,225 @@
+<!-- Edit Booking Page -->
+<div style="max-width: 800px; margin: 0 auto; padding: 30px 20px;">
+  <div style="margin-bottom: 30px;">
+    <a href="/my-bookings" style="color: #2c5f2d; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+      ← Kembali ke My Bookings
+    </a>
+  </div>
+
+  <div style="background: white; border-radius: 12px; padding: 30px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+    <h1>Edit Booking</h1>
+    <p style="color: #666; margin-bottom: 30px;">Booking Number: <strong><%= booking.bookingNumber %></strong></p>
+
+    <form action="/booking/update/<%= booking.id %>" method="POST">
+      
+      <!-- Package Info (Read-only) -->
+      <div class="form-section">
+        <h3>Informasi Paket</h3>
+        <% if (booking.hikingPackage) { %>
+          <div class="info-box">
+            <strong>Paket:</strong> <%= booking.hikingPackage.name %>
+            <br>
+            <strong>Harga:</strong> Rp <%= booking.hikingPackage.price.toLocaleString('id-ID') %> / orang
+          </div>
+        <% } %>
+        <% if (booking.basecamp) { %>
+          <div class="info-box">
+            <strong>Basecamp:</strong> <%= booking.basecamp.name %>
+            <br>
+            <strong>Harga:</strong> Rp <%= booking.basecamp.price.toLocaleString('id-ID') %> / malam
+          </div>
+        <% } %>
+      </div>
+
+      <!-- Editable Fields -->
+      <div class="form-section">
+        <h3>Informasi Booking</h3>
+        
+        <div class="form-group">
+          <label for="hikingDate">Tanggal Hiking *</label>
+          <input 
+            type="date" 
+            id="hikingDate" 
+            name="hikingDate" 
+            value="<%= booking.hikingDate.toISOString().split('T')[0] %>"
+            min="<%= new Date().toISOString().split('T')[0] %>"
+            required
+          >
+        </div>
+
+        <div class="form-group">
+          <label for="numberOfPeople">Jumlah Peserta *</label>
+          <input 
+            type="number" 
+            id="numberOfPeople" 
+            name="numberOfPeople" 
+            value="<%= booking.numberOfPeople %>"
+            min="1" 
+            max="20"
+            required
+          >
+          <small>Minimal 1 orang, maksimal 20 orang</small>
+        </div>
+
+        <div class="form-group">
+          <label for="notes">Catatan</label>
+          <textarea 
+            id="notes" 
+            name="notes" 
+            rows="4"
+            placeholder="Tambahkan catatan khusus..."
+          ><%= booking.notes || '' %></textarea>
+        </div>
+      </div>
+
+      <!-- Current Price Info -->
+      <div class="price-summary">
+        <h3>Ringkasan Harga</h3>
+        <div class="price-item">
+          <span>Total Harga Saat Ini:</span>
+          <strong>Rp <%= booking.totalPrice.toLocaleString('id-ID') %></strong>
+        </div>
+        <p style="font-size: 0.9rem; color: #666; margin-top: 10px;">
+          * Harga akan dihitung ulang berdasarkan jumlah peserta yang baru
+        </p>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="form-actions">
+        <a href="/my-bookings" class="btn-secondary">Batal</a>
+        <button type="submit" class="btn-primary">Simpan Perubahan</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<style>
+  .form-section {
+    margin-bottom: 30px;
+    padding-bottom: 20px;
+    border-bottom: 2px solid #f0f0f0;
+  }
+
+  .form-section:last-of-type {
+    border-bottom: none;
+  }
+
+  .form-section h3 {
+    color: #2c5f2d;
+    margin-bottom: 15px;
+    font-size: 1.2rem;
+  }
+
+  .info-box {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    margin-bottom: 15px;
+    border-left: 4px solid #2c5f2d;
+  }
+
+  .form-group {
+    margin-bottom: 20px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 8px;
+    font-weight: 500;
+    color: #333;
+  }
+
+  .form-group input,
+  .form-group textarea,
+  .form-group select {
+    width: 100%;
+    padding: 12px;
+    border: 2px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: border-color 0.3s;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus,
+  .form-group select:focus {
+    outline: none;
+    border-color: #2c5f2d;
+  }
+
+  .form-group small {
+    display: block;
+    margin-top: 5px;
+    color: #666;
+    font-size: 0.85rem;
+  }
+
+  .price-summary {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+  }
+
+  .price-summary h3 {
+    color: #2c5f2d;
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+  }
+
+  .price-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    font-size: 1.1rem;
+  }
+
+  .form-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: flex-end;
+  }
+
+  .btn-primary, .btn-secondary {
+    padding: 12px 30px;
+    border-radius: 8px;
+    font-weight: 600;
+    text-decoration: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: all 0.3s;
+  }
+
+  .btn-primary {
+    background: #2c5f2d;
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: #1e4620;
+  }
+
+  .btn-secondary {
+    background: white;
+    color: #666;
+    border: 2px solid #e0e0e0;
+    display: inline-block;
+  }
+
+  .btn-secondary:hover {
+    border-color: #2c5f2d;
+    color: #2c5f2d;
+  }
+
+  @media (max-width: 768px) {
+    .form-actions {
+      flex-direction: column-reverse;
+    }
+
+    .btn-primary, .btn-secondary {
+      width: 100%;
+      text-align: center;
+    }
+  }
+</style>

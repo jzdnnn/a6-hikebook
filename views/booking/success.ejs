@@ -1,0 +1,343 @@
+﻿<style>
+  .success-container {
+    max-width: 700px;
+    margin: 40px auto;
+    padding: 20px;
+  }
+  
+  .success-header {
+    background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+    color: white;
+    padding: 40px 30px;
+    border-radius: 12px;
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .success-icon {
+    font-size: 5em;
+    margin-bottom: 20px;
+    animation: scaleIn 0.5s ease-out;
+  }
+  
+  @keyframes scaleIn {
+    from {
+      transform: scale(0);
+    }
+    to {
+      transform: scale(1);
+    }
+  }
+  
+  .success-header h1 {
+    margin: 0;
+    font-size: 2em;
+  }
+  
+  .booking-number {
+    background: white;
+    color: #28a745;
+    padding: 15px 30px;
+    border-radius: 8px;
+    display: inline-block;
+    margin-top: 20px;
+    font-size: 1.5em;
+    font-weight: bold;
+    font-family: 'Courier New', monospace;
+  }
+  
+  .success-card {
+    background: white;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 2px 15px rgba(0,0,0,0.1);
+    margin-bottom: 20px;
+  }
+  
+  .info-section {
+    margin-bottom: 25px;
+  }
+  
+  .info-section h3 {
+    color: #28a745;
+    border-bottom: 2px solid #28a745;
+    padding-bottom: 10px;
+    margin-bottom: 15px;
+  }
+  
+  .info-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #e0e0e0;
+  }
+  
+  .info-label {
+    font-weight: 600;
+    color: #666;
+  }
+  
+  .info-value {
+    color: #333;
+    text-align: right;
+  }
+  
+  .status-badge {
+    display: inline-block;
+    padding: 5px 15px;
+    border-radius: 20px;
+    font-size: 0.9em;
+    font-weight: bold;
+  }
+  
+  .status-pending {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .next-steps {
+    background: #e7f3ff;
+    border-left: 4px solid #007bff;
+    padding: 20px;
+    border-radius: 4px;
+    margin: 20px 0;
+  }
+  
+  .next-steps h4 {
+    margin-top: 0;
+    color: #004085;
+  }
+  
+  .next-steps ol {
+    margin: 10px 0;
+    padding-left: 20px;
+  }
+  
+  .next-steps li {
+    margin: 8px 0;
+    color: #004085;
+  }
+  
+  .contact-info {
+    background: #f8f9fa;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+  }
+  
+  .contact-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 15px;
+  }
+  
+  .btn {
+    padding: 12px 30px;
+    border: none;
+    border-radius: 6px;
+    font-size: 1em;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-decoration: none;
+    display: inline-block;
+  }
+  
+  .btn-primary {
+    background: #2c5f2d;
+    color: white;
+  }
+  
+  .btn-primary:hover {
+    background: #1e4520;
+  }
+  
+  .btn-success {
+    background: #28a745;
+    color: white;
+  }
+  
+  .btn-success:hover {
+    background: #218838;
+  }
+  
+  .btn-info {
+    background: #17a2b8;
+    color: white;
+  }
+  
+  .btn-info:hover {
+    background: #138496;
+  }
+  
+  .action-buttons {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+  }
+  
+  .participants-summary {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  .participant-item {
+    background: white;
+    padding: 10px;
+    margin: 5px 0;
+    border-radius: 4px;
+    border-left: 3px solid #28a745;
+  }
+</style>
+
+<div class="success-container">
+  <!-- Success Header -->
+  <div class="success-header">
+    <div class="success-icon">✅</div>
+    <h1>Booking Berhasil!</h1>
+    <p>Terima kasih, booking Anda telah kami terima</p>
+    <div class="booking-number">
+      <%= booking.bookingNumber %>
+    </div>
+    <p style="margin-top: 15px; font-size: 0.9em;">
+      Simpan nomor booking ini untuk referensi Anda
+    </p>
+  </div>
+  
+  <!-- Booking Details -->
+  <div class="success-card">
+    <div class="info-section">
+      <h3>� Detail Booking</h3>
+      <div class="info-row">
+        <span class="info-label">Paket</span>
+        <span class="info-value"><%= booking.hikingPackage.name %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Tanggal Pendakian</span>
+        <span class="info-value">
+          <%= new Date(booking.hikingDate).toLocaleDateString('id-ID', { 
+            weekday: 'long', 
+            year: 'numeric', 
+            month: 'long', 
+            day: 'numeric' 
+          }) %>
+        </span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Jumlah Peserta</span>
+        <span class="info-value"><%= booking.numberOfPeople %> orang</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Total Pembayaran</span>
+        <span class="info-value"><strong>Rp <%= booking.totalPrice.toLocaleString('id-ID') %></strong></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status Pembayaran</span>
+        <span class="info-value">
+          <span class="status-badge status-pending">
+            <%= booking.paymentStatus === 'pending' ? '⏳ Menunggu Pembayaran' : booking.paymentStatus %>
+          </span>
+        </span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Status Booking</span>
+        <span class="info-value">
+          <span class="status-badge status-pending">
+            <%= booking.bookingStatus === 'pending' ? '⏳ Menunggu Konfirmasi' : booking.bookingStatus %>
+          </span>
+        </span>
+      </div>
+    </div>
+    
+    <div class="info-section">
+      <h3>� Data Pemesan</h3>
+      <div class="info-row">
+        <span class="info-label">Nama</span>
+        <span class="info-value"><%= booking.customerName %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Email</span>
+        <span class="info-value"><%= booking.customerEmail %></span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">Telepon</span>
+        <span class="info-value"><%= booking.customerPhone %></span>
+      </div>
+    </div>
+    
+    <% 
+    let participants = [];
+    try {
+      participants = JSON.parse(booking.participants);
+    } catch(e) {
+      participants = [];
+    }
+    %>
+    
+    <% if (participants.length > 0) { %>
+      <div class="info-section">
+        <h3>� Peserta Pendakian</h3>
+        <div class="participants-summary">
+          <% participants.forEach((participant, index) => { %>
+            <div class="participant-item">
+              <strong>Peserta #<%= index + 1 %><%= index === 0 ? ' (Pemesan)' : '' %></strong>
+              - <%= participant.name %>
+              (<%= participant.age %> tahun)
+            </div>
+          <% }); %>
+        </div>
+      </div>
+    <% } %>
+  </div>
+  
+  <!-- Next Steps -->
+  <div class="success-card">
+    <div class="next-steps">
+      <h4>� Langkah Selanjutnya</h4>
+      <ol>
+        <li>Kami sedang memverifikasi pembayaran Anda</li>
+        <li>Konfirmasi booking akan dikirim ke email <strong><%= booking.customerEmail %></strong> dalam 1x24 jam</li>
+        <li>Simpan nomor booking <strong><%= booking.bookingNumber %></strong> untuk referensi</li>
+        <li>Periksa email Anda untuk instruksi lebih lanjut</li>
+        <li>Siapkan perlengkapan pendakian sesuai checklist yang akan dikirim</li>
+      </ol>
+    </div>
+    
+    <div class="contact-info">
+      <h4>� Butuh Bantuan?</h4>
+      <p>Tim kami siap membantu Anda</p>
+      <div class="contact-buttons">
+        <a href="https://wa.me/6281234567890?text=Halo%20saya%20booking%20dengan%20nomor%20<%= booking.bookingNumber %>" 
+           class="btn btn-success" target="_blank">
+          � WhatsApp
+        </a>
+        <a href="mailto:support@hikebook.com?subject=Booking%20<%= booking.bookingNumber %>" 
+           class="btn btn-info">
+          � Email
+        </a>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Action Buttons -->
+  <div class="action-buttons">
+    <a href="/" class="btn btn-primary">
+      🏠 Kembali ke Beranda
+    </a>
+    <button onclick="window.print()" class="btn btn-info">
+      �️ Cetak Bukti Booking
+    </button>
+  </div>
+</div>
+
+<script>
+  // Send confirmation to email (simulation)
+  console.log('Booking created:', {
+    bookingNumber: '<%= booking.bookingNumber %>',
+    customerEmail: '<%= booking.customerEmail %>',
+    totalPrice: <%= booking.totalPrice %>
+  });
+</script>
+
