@@ -1,7 +1,7 @@
 import express from 'express';
 import bcrypt from 'bcryptjs';
 import prisma from '../prisma/client.js';
-import { generateToken } from '../middleware/auth.js';
+import { generateToken, authenticateToken } from '../middleware/auth.js';
 
 const router = express.Router();
 
@@ -132,7 +132,7 @@ router.post('/login', async (req, res) => {
  * GET /api/auth/me
  * Get user profile (protected route)
  */
-router.get('/me', async (req, res) => {
+router.get('/me', authenticateToken, async (req, res) => {
   try {
     // req.user sudah di-set oleh authenticateToken middleware
     const user = await prisma.user.findUnique({

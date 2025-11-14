@@ -17,6 +17,11 @@
     }
     footer { text-align: center; padding: 20px; background: #2c5f2d; color: white; margin-top: auto; }
     
+    /* Show sidebar toggle in this layout */
+    .sidebar-toggle {
+      display: flex !important;
+    }
+    
     /* Hero Section */
     .hero-section { background: linear-gradient(135deg, #97bc62 0%, #2c5f2d 100%); color: white; padding: 40px 20px; border-radius: 12px; margin-bottom: 30px; text-align: center; }
     .hero-section h1 { margin: 0 0 10px 0; font-size: 2.5rem; }
@@ -142,29 +147,25 @@
     
     /* Toggle Sidebar Button */
     .sidebar-toggle {
-      position: fixed;
-      left: 30px;
-      top: 100px;
-      z-index: 999;
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, #2c5f2d 0%, #97bc62 100%);
+      width: 40px;
+      height: 40px;
+      border-radius: 8px;
+      background: transparent;
       color: white;
-      border: none;
+      border: 2px solid white;
       cursor: pointer;
-      box-shadow: 0 4px 12px rgba(44, 95, 45, 0.3);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.2rem;
+      font-size: 1.3rem;
       transition: all 0.3s ease;
-      animation: pulse 2s infinite;
+      margin-right: 15px;
     }
     
     .sidebar-toggle:hover {
-      transform: scale(1.1);
-      box-shadow: 0 6px 20px rgba(44, 95, 45, 0.4);
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      transform: scale(1.05);
     }
     
     .sidebar-toggle:active {
@@ -173,10 +174,11 @@
     
     .sidebar-toggle .toggle-icon {
       transition: transform 0.3s ease;
+      line-height: 1;
     }
     
     .sidebar-toggle.active .toggle-icon {
-      transform: rotate(180deg);
+      transform: rotate(90deg);
     }
     
     @keyframes pulse {
@@ -207,87 +209,16 @@
       background: #2c5f2d;
     }
     
-    .filter-module { 
-      background: white;
-      border: 1px solid #e0e0e0;
-      border-radius: 12px;
-      padding: 20px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-    }
-    .filter-module h4 {
-      margin-top: 0;
-      color: #2c5f2d;
-    }
-    .filter-group { 
-      margin-bottom: 20px;
-    }
-    .filter-group h5 {
-      margin: 0 0 10px 0;
-      color: #495057;
-      font-size: 0.95rem;
-    }
-    .filter-group label {
-      display: block;
-      margin-bottom: 8px;
-      color: #495057;
-      font-size: 0.9rem;
-    }
-    .filter-group input[type="checkbox"] {
-      margin-right: 8px;
-    }
-    .filter-button { 
-      width: 100%; 
-      padding: 12px; 
-      background: #2c5f2d; 
-      color: white; 
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      margin-bottom: 10px;
-      transition: background 0.3s;
-    }
-    .filter-button:hover {
-      background: #1e4620;
-    }
-    .reset-button {
-      width: 100%;
-      padding: 12px;
-      background: white;
-      color: #2c5f2d;
-      border: 2px solid #2c5f2d;
-      border-radius: 6px;
-      cursor: pointer;
-      font-weight: bold;
-      transition: all 0.3s;
-    }
-    .reset-button:hover {
-      background: #f8f9fa;
-    }
-    
     /* Responsive Design */
     @media (max-width: 1024px) {
       .sidebar {
         width: 280px;
-      }
-      
-      .sidebar-toggle {
-        left: 20px;
-        top: 90px;
       }
     }
     
     @media (max-width: 768px) {
       .sidebar {
         width: 280px;
-      }
-      
-      .sidebar-toggle {
-        left: 15px;
-        top: 85px;
-        width: 45px;
-        height: 45px;
-        font-size: 1rem;
       }
     }
     
@@ -313,11 +244,6 @@
 </head>
 <body>
   <%- include('../partials/header') %>
-
-  <!-- Toggle Sidebar Button -->
-  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
-    <span class="toggle-icon">☰</span>
-  </button>
 
   <!-- Overlay untuk mobile -->
   <div class="sidebar-overlay" id="sidebarOverlay"></div>

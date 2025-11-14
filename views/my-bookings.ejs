@@ -22,7 +22,7 @@
           <div class="booking-header">
             <div>
               <h3><%= booking.bookingNumber %></h3>
-              <p class="booking-date">Dibuat: <%= new Date(booking.createdAt).toLocaleDateString('id-ID') %></p>
+              <p class="booking-date">Dibuat: <%= booking.createdAtFormatted %></p>
             </div>
             <span class="status-badge <%= booking.bookingStatus %>">
               <%= booking.bookingStatus %>
@@ -35,19 +35,14 @@
                 <strong>Paket:</strong> <%= booking.hikingPackage.name %>
               </div>
             <% } %>
-            <% if (booking.basecamp) { %>
-              <div class="detail-item">
-                <strong>Basecamp:</strong> <%= booking.basecamp.name %>
-              </div>
-            <% } %>
             <div class="detail-item">
-              <strong>Tanggal Hiking:</strong> <%= new Date(booking.hikingDate).toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' }) %>
+              <strong>Tanggal Hiking:</strong> <%= booking.hikingDateFormatted %>
             </div>
             <div class="detail-item">
               <strong>Jumlah Peserta:</strong> <%= booking.numberOfPeople %> orang
             </div>
             <div class="detail-item">
-              <strong>Total Harga:</strong> Rp <%= booking.totalPrice.toLocaleString('id-ID') %>
+              <strong>Total Harga:</strong> <%= booking.totalPriceFormatted %>
             </div>
             <div class="detail-item">
               <strong>Status Pembayaran:</strong> 

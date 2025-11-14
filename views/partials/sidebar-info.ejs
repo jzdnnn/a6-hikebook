@@ -1,0 +1,387 @@
+<!-- Sidebar Content -->
+
+<!-- 1. Informasi Ketersediaan Jalur -->
+<div class="sidebar-module">
+  <div class="module-header">
+    <img src="/images/icons/stats-icon.png" alt="Statistics" class="module-icon-img">
+    <h4>Ketersediaan Jalur</h4>
+  </div>
+  <div class="module-content">
+    <div class="availability-item">
+      <div class="availability-label">Booking Hari Ini</div>
+      <div class="availability-value highlight">124 Pendaki</div>
+    </div>
+    <div class="availability-item">
+      <div class="availability-label">Sisa Kuota</div>
+      <div class="availability-value available">476 Slot</div>
+    </div>
+    <div class="quota-bar">
+      <div class="quota-progress" style="width: 24%"></div>
+    </div>
+    <p class="quota-info">Kuota harian: 600 pendaki</p>
+  </div>
+</div>
+
+<!-- 2. Informasi Cuaca -->
+<div class="sidebar-module">
+  <div class="module-header">
+    <img src="/images/icons/weather-icon.png" alt="Weather" class="module-icon-img">
+    <h4>Cuaca Hari Ini</h4>
+  </div>
+  <div class="module-content">
+    <div class="weather-main">
+      <div class="weather-temp">18°C</div>
+      <div class="weather-desc">Cerah Berawan</div>
+    </div>
+    <div class="weather-details">
+      <div class="weather-item">
+        <span class="weather-label">
+          Kelembaban
+        </span>
+        <span class="weather-value">65%</span>
+      </div>
+      <div class="weather-item">
+        <span class="weather-label">
+          Curah Hujan
+        </span>
+        <span class="weather-value">20 mm</span>
+      </div>
+      <div class="weather-item">
+        <span class="weather-label">
+          Angin
+        </span>
+        <span class="weather-value">7 km/h</span>
+      </div>
+    </div>
+    <div class="weather-alert success">
+      <img src="/images/icons/check-icon.png" alt="Check" class="alert-icon-img">
+      <span>Kondisi baik untuk pendakian</span>
+    </div>
+  </div>
+</div>
+
+<!-- 3. Bantuan -->
+<div class="sidebar-module emergency">
+  <div class="module-header">
+    <img src="/images/icons/emergency-icon.png" alt="Emergency" class="module-icon-img">
+    <h4>Bantuan Darurat</h4>
+  </div>
+  <div class="module-content">
+    <div class="emergency-item">
+      <div class="emergency-label">Emergency Hotline</div>
+      <a href="tel:112" class="emergency-number">112</a>
+      <p class="emergency-desc">Layanan darurat 24/7</p>
+    </div>
+    <div class="emergency-item">
+      <div class="emergency-label">Pos Ranger</div>
+      <a href="tel:02518240984" class="emergency-number">(0251) 824-0984</a>
+      <p class="emergency-desc">Kantor Taman Nasional</p>
+    </div>
+    <div class="emergency-item">
+      <div class="emergency-label">WhatsApp Support</div>
+      <a href="https://wa.me/6281234567890" class="emergency-button" target="_blank">
+        <img src="/images/icons/whatsapp-icon.png" alt="WhatsApp" class="wa-icon-img">
+        Chat via WhatsApp
+      </a>
+    </div>
+  </div>
+</div>
+
+<style>
+  /* Sidebar Module Styles */
+  .sidebar-module {
+    background: white;
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  
+  .sidebar-module:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.12);
+  }
+  
+  .module-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 15px;
+    padding-bottom: 12px;
+    border-bottom: 2px solid #e9ecef;
+  }
+  
+  .module-icon {
+    font-size: 1.5rem;
+  }
+  
+  /* Icon Images */
+  .module-icon-img {
+    width: 28px;
+    height: 28px;
+    object-fit: contain;
+  }
+  
+  .weather-icon-img {
+    width: 60px;
+    height: 60px;
+    object-fit: contain;
+    margin-bottom: 8px;
+  }
+  
+  .weather-detail-icon {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    margin-right: 6px;
+    vertical-align: middle;
+  }
+  
+  .alert-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+  
+  .wa-icon-img {
+    width: 22px;
+    height: 22px;
+    object-fit: contain;
+  }
+  
+  .module-header h4 {
+    margin: 0;
+    color: #2c5f2d;
+    font-size: 1.1rem;
+    font-weight: 600;
+  }
+  
+  .module-content {
+    font-size: 0.95rem;
+  }
+  
+  /* 1. Ketersediaan Jalur Styles */
+  .availability-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    border-bottom: 1px solid #f0f0f0;
+  }
+  
+  .availability-item:last-of-type {
+    border-bottom: none;
+  }
+  
+  .availability-label {
+    color: #6c757d;
+    font-size: 0.9rem;
+  }
+  
+  .availability-value {
+    font-weight: bold;
+    font-size: 1.1rem;
+  }
+  
+  .availability-value.highlight {
+    color: #2c5f2d;
+  }
+  
+  .availability-value.available {
+    color: #28a745;
+  }
+  
+  .quota-bar {
+    width: 100%;
+    height: 8px;
+    background: #e9ecef;
+    border-radius: 10px;
+    overflow: hidden;
+    margin: 15px 0 8px 0;
+  }
+  
+  .quota-progress {
+    height: 100%;
+    background: linear-gradient(90deg, #2c5f2d 0%, #97bc62 100%);
+    border-radius: 10px;
+    transition: width 0.5s ease;
+  }
+  
+  .quota-info {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+    text-align: center;
+  }
+  
+  /* 2. Cuaca Styles */
+  .weather-main {
+    text-align: center;
+    padding: 15px 0;
+    margin-bottom: 15px;
+  }
+  
+  .weather-icon {
+    font-size: 3rem;
+    margin-bottom: 8px;
+  }
+  
+  .weather-temp {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #2c5f2d;
+    margin-bottom: 5px;
+  }
+  
+  .weather-desc {
+    color: #6c757d;
+    font-size: 0.95rem;
+  }
+  
+  .weather-details {
+    background: #f8f9fa;
+    border-radius: 8px;
+    padding: 12px;
+    margin-bottom: 12px;
+  }
+  
+  .weather-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+  }
+  
+  .weather-label {
+    color: #495057;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .weather-value {
+    font-weight: 600;
+    color: #2c5f2d;
+  }
+  
+  .weather-alert {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+  }
+  
+  .weather-alert.success {
+    background: #d4edda;
+    color: #155724;
+  }
+  
+  .weather-alert.warning {
+    background: #fff3cd;
+    color: #856404;
+  }
+  
+  .alert-icon {
+    font-size: 1.2rem;
+  }
+  
+  /* 3. Bantuan Darurat Styles */
+  .sidebar-module.emergency {
+    background: linear-gradient(135deg, #fff5f5 0%, #ffe5e5 100%);
+    border: 2px solid #dc3545;
+  }
+  
+  .sidebar-module.emergency .module-header {
+    border-bottom-color: #dc3545;
+  }
+  
+  .sidebar-module.emergency .module-header h4 {
+    color: #dc3545;
+  }
+  
+  .emergency-item {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid #f8d7da;
+  }
+  
+  .emergency-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  
+  .emergency-label {
+    font-size: 0.85rem;
+    color: #6c757d;
+    margin-bottom: 5px;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  
+  .emergency-number {
+    display: block;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #dc3545;
+    text-decoration: none;
+    margin: 5px 0;
+    transition: color 0.3s ease;
+  }
+  
+  .emergency-number:hover {
+    color: #c82333;
+    text-decoration: underline;
+  }
+  
+  .emergency-desc {
+    margin: 5px 0 0 0;
+    font-size: 0.85rem;
+    color: #6c757d;
+  }
+  
+  .emergency-button {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: #25D366;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    margin-top: 8px;
+  }
+  
+  .emergency-button:hover {
+    background: #128C7E;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(37, 211, 102, 0.3);
+  }
+  
+  .wa-icon {
+    font-size: 1.3rem;
+  }
+  
+  /* Responsive */
+  @media (max-width: 768px) {
+    .sidebar-module {
+      padding: 15px;
+    }
+    
+    .weather-temp {
+      font-size: 1.8rem;
+    }
+    
+    .emergency-number {
+      font-size: 1.3rem;
+    }
+  }
+</style>

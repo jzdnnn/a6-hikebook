@@ -47,8 +47,42 @@
   }
   
   .info-card-icon {
-    font-size: 2em;
     margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+  }
+
+  .info-icon-img {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+  }
+
+  .section-icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  .list-icon-img {
+    width: 18px;
+    height: 18px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 8px;
+  }
+
+  .btn-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    vertical-align: middle;
+    margin-right: 8px;
+    filter: brightness(0) invert(1);
   }
   
   .info-card-label {
@@ -75,6 +109,23 @@
     color: #2c5f2d;
     margin-bottom: 15px;
   }
+
+  .package-description h3 {
+    color: #2c5f2d;
+    margin-top: 20px;
+    margin-bottom: 10px;
+  }
+
+  .package-description ul {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .package-description li {
+    padding: 8px 0;
+    display: flex;
+    align-items: center;
+  }
   
   .booking-section {
     background: #f8f9fa;
@@ -92,7 +143,9 @@
     border-radius: 8px;
     cursor: pointer;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     transition: all 0.3s ease;
   }
   
@@ -144,44 +197,72 @@
   
   <div class="package-info-grid">
     <div class="info-card">
-      <div class="info-card-icon">⏱️</div>
+      <div class="info-card-icon">
+        <img src="/images/icons/duration-icon.png" alt="Duration" class="info-icon-img">
+      </div>
       <div class="info-card-label">Durasi</div>
       <div class="info-card-value"><%= package.duration %></div>
     </div>
     
     <div class="info-card">
-      <div class="info-card-icon">�</div>
+      <div class="info-card-icon">
+        <img src="/images/icons/distance-icon.png" alt="Distance" class="info-icon-img">
+      </div>
       <div class="info-card-label">Jarak</div>
       <div class="info-card-value"><%= package.distance %></div>
     </div>
     
     <div class="info-card">
-      <div class="info-card-icon">⚠️</div>
+      <div class="info-card-icon">
+        <img src="/images/icons/difficulty-icon.png" alt="Difficulty" class="info-icon-img">
+      </div>
       <div class="info-card-label">Tingkat Kesulitan</div>
       <div class="info-card-value"><%= package.difficulty %></div>
     </div>
   </div>
   
   <div class="package-description">
-    <h2>� Deskripsi Paket</h2>
+    <h2>
+      <img src="/images/icons/info-icon.png" alt="Info" class="section-icon-img"> Deskripsi Paket
+    </h2>
     <p><%= package.description %></p>
     
     <h3>Yang Termasuk dalam Paket:</h3>
     <ul>
-      <li>✅ Tiket masuk kawasan</li>
-      <li>✅ Pemandu lokal berpengalaman</li>
-      <li>✅ Asuransi perjalanan</li>
-      <li>✅ Sertifikat pendakian</li>
-      <li>✅ Dokumentasi foto</li>
+      <li>
+        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Tiket masuk kawasan
+      </li>
+      <li>
+        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Pemandu lokal berpengalaman
+      </li>
+      <li>
+        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Asuransi perjalanan
+      </li>
+      <li>
+        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Sertifikat pendakian
+      </li>
+      <li>
+        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Dokumentasi foto
+      </li>
     </ul>
     
     <h3>Yang Perlu Disiapkan:</h3>
     <ul>
-      <li>� KTP/Identitas diri</li>
-      <li>🎒 Perlengkapan pribadi (tas carrier, sleeping bag, dll)</li>
-      <li>� Obat-obatan pribadi</li>
-      <li>🍱 Bekal makanan dan minuman</li>
-      <li>� Pakaian hangat dan tahan cuaca</li>
+      <li>
+        <img src="/images/icons/id-card-icon.png" alt="ID Card" class="list-icon-img"> KTP/Identitas diri
+      </li>
+      <li>
+        <img src="/images/icons/backpack-icon.png" alt="Backpack" class="list-icon-img"> Perlengkapan pribadi (tas carrier, sleeping bag, dll)
+      </li>
+      <li>
+        <img src="/images/icons/medicine-icon.png" alt="Medicine" class="list-icon-img"> Obat-obatan pribadi
+      </li>
+      <li>
+        <img src="/images/icons/food-icon.png" alt="Food" class="list-icon-img"> Bekal makanan dan minuman
+      </li>
+      <li>
+        <img src="/images/icons/clothes-icon.png" alt="Clothes" class="list-icon-img"> Pakaian hangat dan tahan cuaca
+      </li>
     </ul>
   </div>
   
@@ -189,11 +270,10 @@
     <h2>Siap untuk Petualangan?</h2>
     <p>Pesan sekarang dan mulai perjalanan hiking Anda!</p>
     <div style="margin-top: 20px;">
-      <a href="/" class="btn-back">← Kembali</a>
+      <a href="/" class="btn-back"> Kembali</a>
       <a href="/booking/step1/<%= package.id %>" class="btn-book-now">
-        🎒 Pesan Sekarang
+        <img src="/images/icons/backpack-icon.png" alt="Backpack" class="btn-icon-img"> Pesan Sekarang
       </a>
     </div>
   </div>
 </div>
-

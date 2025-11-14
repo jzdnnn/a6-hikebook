@@ -1,16 +1,12 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
-// Model untuk Paket Hiking/Pendakian
 model HikingPackage {
   id          String    @id @default(uuid())
   name        String
@@ -24,21 +20,6 @@ model HikingPackage {
   bookings    Booking[]
 }
 
-// Model untuk Basecamp
-model Basecamp {
-  id          String    @id @default(uuid())
-  name        String
-  price       Int       // harga per malam
-  capacity    Int
-  location    String
-  facilities  String    // JSON string berisi array fasilitas
-  description String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  bookings    Booking[]
-}
-
-// Model untuk User
 model User {
   id        String    @id @default(uuid())
   name      String
@@ -50,39 +31,40 @@ model User {
   bookings  Booking[]
 }
 
-// Model untuk Booking
 model Booking {
-  id               String          @id @default(uuid())
-  bookingNumber    String          @unique
-  
-  // Customer Info
-  customerName     String
-  customerEmail    String
-  customerPhone    String
-  
-  // Booking Info
-  hikingPackageId  String?
-  hikingPackage    HikingPackage?  @relation(fields: [hikingPackageId], references: [id])
-  basecampId       String?
-  basecamp         Basecamp?       @relation(fields: [basecampId], references: [id])
-  hikingDate       DateTime
-  numberOfPeople   Int
-  participants     String          // JSON string berisi array data peserta
-  
-  // Payment Info
-  totalPrice       Int
-  paymentMethod    String?         // transfer_bank, e_wallet, credit_card
-  paymentStatus    String          @default("pending") // pending, paid, failed
-  paymentProof     String?         // URL/path ke bukti transfer
-  
-  // Status
-  bookingStatus    String          @default("pending") // pending, confirmed, cancelled, completed
-  notes            String?
-  
-  // Relations (optional - jika sudah ada user login)
-  userId           String?
-  user             User?           @relation(fields: [userId], references: [id])
-  
-  createdAt        DateTime        @default(now())
-  updatedAt        DateTime        @updatedAt
+  id              String         @id @default(uuid())
+  bookingNumber   String         @unique
+  customerName    String
+  customerEmail   String
+  customerPhone   String
+  hikingPackageId String?
+  basecampId      String?
+  hikingDate      DateTime
+  numberOfPeople  Int
+  participants    String
+  totalPrice      Int
+  paymentMethod   String?
+  paymentStatus   String         @default("pending")
+  paymentProof    String?
+  bookingStatus   String         @default("pending")
+  notes           String?
+  userId          String?
+  createdAt       DateTime       @default(now())
+  updatedAt       DateTime       @updatedAt
+  Basecamp        Basecamp?      @relation(fields: [basecampId], references: [id])
+  hikingPackage   HikingPackage? @relation(fields: [hikingPackageId], references: [id])
+  user            User?          @relation(fields: [userId], references: [id])
+}
+
+model Basecamp {
+  id          String    @id
+  name        String
+  price       Int
+  capacity    Int
+  location    String
+  facilities  String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime
+  Booking     Booking[]
 }

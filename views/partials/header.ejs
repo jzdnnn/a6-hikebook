@@ -1,29 +1,24 @@
 ﻿<header>
+  <!-- Toggle Sidebar Button -->
+  <button class="sidebar-toggle" id="sidebarToggle" aria-label="Toggle Sidebar">
+    <span class="toggle-icon">☰</span>
+  </button>
+  
   <div class="logo">
     <a href="/">
+      <img src="/images/logo.png" alt="HikeBook Logo" class="logo-icon">
       <span class="logo-text">HikeBook</span>
     </a>
   </div>
   
-  <!-- Search Bar -->
-  <div class="search-container">
-    <input type="text" class="search-input" placeholder="Cari jalur, basecamp, atau paket...">
-    <button class="search-btn">
-      <span>Search</span>
-    </button>
-  </div>
-  
   <nav class="main-nav">
-    <a href="/" class="nav-link active">
-      <span>Home</span>
+    <a href="/" class="nav-link <%= typeof currentPath !== 'undefined' && currentPath === '/' ? 'active' : '' %>">
+      <span>Beranda</span>
     </a>
-    <a href="/info-jalur" class="nav-link">
+    <a href="/info-jalur" class="nav-link <%= typeof currentPath !== 'undefined' && currentPath === '/info-jalur' ? 'active' : '' %>">
       <span>Informasi Jalur</span>
     </a>
-    <a href="/my-bookings" class="nav-link">
-      <span>My Bookings</span>
-    </a>
-    <a href="/rules" class="nav-link">
+    <a href="/rules" class="nav-link <%= typeof currentPath !== 'undefined' && currentPath === '/rules' ? 'active' : '' %>">
       <span>Peraturan</span>
     </a>
   </nav>
@@ -31,7 +26,7 @@
   <div class="header-actions">
     <div class="notification-container">
       <button class="icon-btn notification-btn">
-        <span class="icon">�</span>
+        <img src="/images/notification.png" alt="Notification" class="icon-img">
         <span class="badge">3</span>
       </button>
       <div class="notification-dropdown">
@@ -69,52 +64,65 @@
     </div>
     
     <!-- User Menu -->
-    <div class="user-menu-container">
-      <button class="user-menu-btn">
-        <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5f2d&color=fff" alt="User" class="user-avatar">
-        <span class="user-name">John Doe</span>
-        <span class="dropdown-arrow">▼</span>
-      </button>
-      <div class="user-dropdown">
-        <div class="user-info">
-          <img src="https://ui-avatars.com/api/?name=John+Doe&background=2c5f2d&color=fff" alt="User" class="user-avatar-large">
-          <div>
-            <h4>John Doe</h4>
-            <p>john.doe@email.com</p>
+    <% if (user) { %>
+      <div class="user-menu-container">
+        <button class="user-menu-btn">
+          <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.name) %>&background=2c5f2d&color=fff" alt="User" class="user-avatar">
+          <span class="user-name"><%= user.name %></span>
+          <span class="dropdown-arrow">▼</span>
+        </button>
+        <div class="user-dropdown">
+          <div class="user-info">
+            <img src="https://ui-avatars.com/api/?name=<%= encodeURIComponent(user.name) %>&background=2c5f2d&color=fff" alt="User" class="user-avatar-large">
+            <div>
+              <h4><%= user.name %></h4>
+              <p><%= user.email %></p>
+            </div>
           </div>
+          <div class="dropdown-divider"></div>
+          <a href="/my-bookings" class="dropdown-item">
+            <span class="item-icon">
+              <img src="/images/icons/booking-icon.png" alt="Bookings" class="menu-icon-img">
+            </span>
+            <span>Booking Saya</span>
+          </a>
+          <a href="/profile" class="dropdown-item">
+            <span class="item-icon">
+              <img src="/images/icons/profile-icon.png" alt="Profile" class="menu-icon-img">
+            </span>
+            <span>Profil Saya</span>
+          </a>
+          <a href="/settings" class="dropdown-item">
+            <span class="item-icon">
+              <img src="/images/icons/settings-icon.png" alt="Settings" class="menu-icon-img">
+            </span>
+            <span>Pengaturan</span>
+          </a>
+          <div class="dropdown-divider"></div>
+          <form action="/logout" method="POST" style="margin: 0;">
+            <button type="submit" class="dropdown-item logout" style="width: 100%; text-align: left; background: none; border: none; cursor: pointer; font-size: inherit; padding: 12px 20px;">
+              <span class="item-icon">
+                <img src="/images/icons/logout-icon.png" alt="Logout" class="menu-icon-img">
+              </span>
+              <span>Keluar</span>
+            </button>
+          </form>
         </div>
-        <div class="dropdown-divider"></div>
-        <a href="/profile" class="dropdown-item">
-          <span class="item-icon">�</span>
-          <span>Profil Saya</span>
-        </a>
-        <a href="/bookings" class="dropdown-item">
-          <span class="item-icon">�</span>
-          <span>Booking Saya</span>
-        </a>
-        <a href="/favorites" class="dropdown-item">
-          <span class="item-icon">♥</span>
-          <span>Favorit</span>
-        </a>
-        <a href="/settings" class="dropdown-item">
-          <span class="item-icon">⚙</span>
-          <span>Pengaturan</span>
-        </a>
-        <div class="dropdown-divider"></div>
-        <a href="/logout" class="dropdown-item logout">
-          <span class="item-icon">→</span>
-          <span>Keluar</span>
-        </a>
       </div>
-    </div>
+    <% } else { %>
+      <div class="auth-buttons">
+        <a href="/login" class="btn-login">Masuk</a>
+        <a href="/register" class="btn-register">Daftar</a>
+      </div>
+    <% } %>
   </div>
 </header>
 
 <style>
   header {
     display: grid;
-    grid-template-columns: auto 1fr auto auto;
-    grid-template-areas: "logo search nav actions";
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-areas: "sidebar-toggle logo nav actions";
     align-items: center;
     gap: 20px;
     padding: 15px 40px;
@@ -123,6 +131,12 @@
     position: sticky;
     top: 0;
     z-index: 1000;
+  }
+  
+  /* Sidebar Toggle Button in Header */
+  .sidebar-toggle {
+    grid-area: sidebar-toggle;
+    display: none; /* Hidden by default, akan muncul di layout dengan sidebar */
   }
   
   /* Logo */
@@ -147,41 +161,21 @@
   }
   
   .logo-icon {
-    font-size: 2rem;
+    height: 45px;
+    width: auto;
+    object-fit: contain;
+    transition: transform 0.3s ease;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.1));
   }
   
-  /* Search Bar */
-  .search-container {
-    grid-area: search;
-    width: 100%;
-    max-width: 450px;
-    display: flex;
-    background: rgba(255,255,255,0.95);
-    border-radius: 25px;
-    overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  .logo a:hover .logo-icon {
+    transform: scale(1.1);
+    filter: drop-shadow(0 4px 8px rgba(0,0,0,0.2));
   }
   
-  .search-input {
-    flex: 1;
-    padding: 12px 20px;
-    border: none;
-    outline: none;
-    font-size: 0.95rem;
-    background: transparent;
-  }
-  
-  .search-btn {
-    padding: 12px 20px;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    font-size: 1.2rem;
-    transition: background 0.3s;
-  }
-  
-  .search-btn:hover {
-    background: rgba(44, 95, 45, 0.1);
+  .logo-text {
+    font-size: 1.5rem;
+    font-weight: bold;
   }
   
   /* Navigation */
@@ -190,6 +184,7 @@
     display: flex;
     gap: 5px;
     align-items: center;
+    justify-content: flex-end;
   }
   
   .nav-link {
@@ -250,6 +245,17 @@
   
   .icon-btn .icon {
     font-size: 1.3rem;
+  }
+  
+  .icon-btn .icon-img {
+    width: 24px;
+    height: 24px;
+    object-fit: contain;
+    filter: brightness(0) invert(1);
+  }
+  
+  .icon-btn:hover .icon-img {
+    filter: brightness(0) invert(1) drop-shadow(0 0 4px rgba(255,255,255,0.5));
   }
   
   .badge {
@@ -357,6 +363,44 @@
     text-decoration: none;
     font-weight: 500;
     font-size: 0.9rem;
+  }
+  
+  /* Auth Buttons */
+  .auth-buttons {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  
+  .btn-login, .btn-register {
+    padding: 10px 24px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s;
+    font-size: 0.95rem;
+  }
+  
+  .btn-login {
+    color: white;
+    background: transparent;
+    border: 2px solid white;
+  }
+  
+  .btn-login:hover {
+    background: white;
+    color: #2c5f2d;
+  }
+  
+  .btn-register {
+    color: #2c5f2d;
+    background: white;
+  }
+  
+  .btn-register:hover {
+    background: #f0f0f0;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
   }
   
   /* User Menu */
@@ -475,9 +519,22 @@
   }
   
   .item-icon {
-    font-size: 1.2rem;
     width: 24px;
-    text-align: center;
+    height: 24px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .menu-icon-img {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+    opacity: 0.7;
+  }
+
+  .dropdown-item:hover .menu-icon-img {
+    opacity: 1;
   }
   
   @keyframes slideDown {
@@ -494,26 +551,27 @@
   /* Responsive */
   @media (max-width: 1200px) {
     header {
-      grid-template-columns: auto 1fr auto;
-      gap: 20px;
+      grid-template-columns: auto auto 1fr auto;
+      grid-template-areas: "sidebar-toggle logo nav actions";
+      gap: 15px;
     }
     
     .main-nav {
       display: none;
-    }
-    
-    .search-container {
-      max-width: 350px;
     }
   }
   
   @media (max-width: 1024px) {
     header {
       padding: 15px 25px;
+      gap: 12px;
     }
     
-    .search-container {
-      max-width: 300px;
+    .sidebar-toggle {
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      margin-right: 8px;
     }
     
     .user-name {
@@ -533,42 +591,33 @@
     }
     
     .logo-icon {
-      font-size: 1.5rem;
-    }
-    
-    .search-container {
-      display: none;
+      height: 35px;
     }
     
     .main-nav {
       display: none;
-    }
-  }
-  
-  /* Responsive Design */
-  @media (max-width: 1200px) {
-    header {
-      grid-template-columns: auto 1fr auto;
-      grid-template-areas: 
-        "logo search actions"
-        "nav nav nav";
-      gap: 15px;
-    }
-    
-    .main-nav {
-      justify-content: center;
-      padding-top: 10px;
-      border-top: 1px solid rgba(255,255,255,0.2);
     }
   }
   
   @media (max-width: 768px) {
     header {
       padding: 15px 20px;
+      gap: 10px;
     }
     
-    .search-container {
-      max-width: 300px;
+    .sidebar-toggle {
+      width: 34px;
+      height: 34px;
+      font-size: 1rem;
+      margin-right: 5px;
+    }
+    
+    .logo-text {
+      font-size: 1.2rem;
+    }
+    
+    .logo-icon {
+      height: 35px;
     }
     
     .nav-link span {

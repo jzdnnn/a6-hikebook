@@ -4,6 +4,7 @@ import { fileURLToPath } from 'url';
 import ejsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import bodyParser from 'body-parser';
+import bcrypt from 'bcryptjs';
 import { registerToArea, renderArea } from './core/areaManager.js'; // <-- Import area manager
 import prisma from './prisma/client.js'; // <-- Import Prisma Client
 
@@ -39,18 +40,37 @@ app.use(ejsLayouts);
 app.set('layout', 'layout'); 
 // -----------------------------
 
+// --- SESSION MIDDLEWARE ---
+// Middleware untuk check apakah user sudah login
+function requireLogin(req, res, next) {
+  if (!req.session.user) {
+    req.session.redirectTo = req.originalUrl; // Save intended URL
+    return res.redirect('/login');
+  }
+  next();
+}
+
+// Middleware untuk check apakah user belum login
+function requireGuest(req, res, next) {
+  if (req.session.user) {
+    return res.redirect('/');
+  }
+  next();
+}
+
+// Middleware untuk membuat user tersedia di semua views
+app.use((req, res, next) => {
+  res.locals.user = req.session.user || null;
+  res.locals.currentPath = req.path;
+  next();
+});
+// --------------------------
 
 // --- "PLUGIN" & REGISTRASI AREA ---
-// Daftarkan modul filter ke area 'sidebar'
-const filterTemplatePath = path.join(__dirname, 'views', 'partials', 'filters.ejs');
-const filterData = {
-  maxPrice: 1000000,
-  durations: ['2 Hari 1 Malam', '3 Hari 2 Malam'],
-  difficulties: ['Mudah', 'Sedang', 'Menantang', 'Sulit']
-};
-registerToArea('sidebar', filterTemplatePath, filterData);
+// Daftarkan modul sidebar info
+const sidebarTemplatePath = path.join(__dirname, 'views', 'partials', 'sidebar-info.ejs');
+registerToArea('sidebar', sidebarTemplatePath, {});
 // ----------------------------------
-
 
 // --- LOGIKA & DATA ---
 async function getHikingPackages() {
@@ -77,49 +97,17 @@ async function getHikingPackages() {
   }
 }
 
-async function getBasecamps() {
-  try {
-    const basecamps = await prisma.basecamp.findMany({
-      orderBy: {
-        createdAt: 'asc'
-      }
-    });
-    
-    // Transform data untuk compatibility dengan view yang ada
-    return basecamps.map(camp => ({
-      id: camp.id,
-      name: camp.name,
-      pricePerNight: camp.price,
-      capacity: camp.capacity,
-      facilities: JSON.parse(camp.facilities),
-      address: camp.location,
-      coordinates: '-6.7392, 107.0097', // Default coordinates
-      description: camp.description,
-      image: 'https://images.unsplash.com/photo-1504280390367-361c6d9f38f4?w=500', // Default image
-      rating: 4.5,
-      reviews: 0
-    }));
-  } catch (error) {
-    console.error('Error fetching basecamps:', error);
-    return [];
-  }
-}
-
 // --- CONTROLLER (ROUTES) ---
 
 // === API ROUTES (dengan token authentication) ===
 app.use('/api/auth', authRoutes);
-app.use('/api/bookings', bookingRoutes);
-
-// API route untuk get profile (protected)
-app.use('/api/auth/me', authenticateToken, authRoutes);
+app.use('/api/bookings', authenticateToken, bookingRoutes);
 
 // === WEB ROUTES (untuk tampilan HTML) ===
 
 // 1. Jadikan route handler ini "async"
 app.get('/', async (req, res) => {
   const packages = await getHikingPackages();
-  const basecamps = await getBasecamps();
 
   // 2. Panggil dan AWAIT renderArea di sini (di dalam controller)
   const sidebarHtml = await renderArea('sidebar');
@@ -128,9 +116,8 @@ app.get('/', async (req, res) => {
     title: 'Booking Pendakian Gunung Gede Pangrango',
     mountainName: 'Gunung Gede Pangrango',
     packages: packages,
-    basecamps: basecamps,
-    layout: 'layouts/main-with-sidebar', // Tentukan layout spesifik untuk halaman ini
-    sidebarHtml: sidebarHtml // 3. Kirim HTML-nya sebagai variabel
+    layout: 'layouts/main-with-sidebar', // Menggunakan layout dengan sidebar
+    sidebarHtml: sidebarHtml // Sidebar kosong untuk saat ini
   });
 });
 
@@ -141,12 +128,13 @@ app.get('/about', (req, res) => {
   });
 });
 
-app.get('/basecamps', async (req, res) => {
-  const basecamps = await getBasecamps();
-  res.render('basecamps', {
-    title: 'Booking Basecamp',
-    basecamps: basecamps,
-    layout: 'layout'
+app.get('/info-jalur', async (req, res) => {
+  const sidebarHtml = await renderArea('sidebar');
+  
+  res.render('trail-info', {
+    title: 'Informasi Jalur',
+    layout: 'layouts/main-with-sidebar',
+    sidebarHtml: sidebarHtml
   });
 });
 
@@ -390,9 +378,22 @@ app.get('/booking/success/:bookingId', async (req, res) => {
       return res.status(404).send('Booking tidak ditemukan');
     }
     
+    // Format data untuk view (separation of concerns)
+    const formattedBooking = {
+      ...booking,
+      hikingDateFormatted: new Date(booking.hikingDate).toLocaleDateString('id-ID', {
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      totalPriceFormatted: 'Rp ' + booking.totalPrice.toLocaleString('id-ID'),
+      participantsList: booking.participants ? JSON.parse(booking.participants) : []
+    };
+    
     res.render('booking/success', {
       title: 'Booking Berhasil',
-      booking: booking,
+      booking: formattedBooking,
       layout: 'layout'
     });
   } catch (error) {
@@ -406,23 +407,41 @@ app.get('/booking/success/:bookingId', async (req, res) => {
 // === MY BOOKINGS & CRUD ROUTES ===
 
 // GET - Halaman My Bookings (daftar booking user)
-app.get('/my-bookings', async (req, res) => {
+app.get('/my-bookings', requireLogin, async (req, res) => {
   try {
-    // Untuk demo, kita ambil semua bookings
-    // Di production, filter berdasarkan userId dari session
+    // Filter bookings berdasarkan userId dari session
     const bookings = await prisma.booking.findMany({
+      where: {
+        customerEmail: req.session.user.email // Filter by logged-in user
+      },
       include: {
-        hikingPackage: true,
-        basecamp: true
+        hikingPackage: true
       },
       orderBy: {
         createdAt: 'desc'
       }
     });
 
+    // Format data untuk view (separation of concerns)
+    const formattedBookings = bookings.map(booking => ({
+      ...booking,
+      createdAtFormatted: new Date(booking.createdAt).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      hikingDateFormatted: new Date(booking.hikingDate).toLocaleDateString('id-ID', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      }),
+      totalPriceFormatted: 'Rp ' + booking.totalPrice.toLocaleString('id-ID'),
+      participantsList: booking.participants ? JSON.parse(booking.participants) : []
+    }));
+
     res.render('my-bookings', {
       title: 'My Bookings - HikeBook',
-      bookings: bookings,
+      bookings: formattedBookings,
       layout: 'layout'
     });
   } catch (error) {
@@ -432,13 +451,12 @@ app.get('/my-bookings', async (req, res) => {
 });
 
 // GET - Halaman Edit Booking
-app.get('/booking/edit/:id', async (req, res) => {
+app.get('/booking/edit/:id', requireLogin, async (req, res) => {
   try {
     const booking = await prisma.booking.findUnique({
       where: { id: req.params.id },
       include: {
-        hikingPackage: true,
-        basecamp: true
+        hikingPackage: true
       }
     });
 
@@ -447,13 +465,11 @@ app.get('/booking/edit/:id', async (req, res) => {
     }
 
     const packages = await getHikingPackages();
-    const basecamps = await getBasecamps();
 
     res.render('edit-booking', {
       title: 'Edit Booking - HikeBook',
       booking: booking,
       packages: packages,
-      basecamps: basecamps,
       layout: 'layout'
     });
   } catch (error) {
@@ -463,7 +479,7 @@ app.get('/booking/edit/:id', async (req, res) => {
 });
 
 // POST - Update Booking
-app.post('/booking/update/:id', async (req, res) => {
+app.post('/booking/update/:id', requireLogin, async (req, res) => {
   try {
     const { hikingDate, numberOfPeople, notes } = req.body;
 
@@ -484,7 +500,7 @@ app.post('/booking/update/:id', async (req, res) => {
 });
 
 // POST - Delete/Cancel Booking
-app.post('/booking/delete/:id', async (req, res) => {
+app.post('/booking/delete/:id', requireLogin, async (req, res) => {
   try {
     const booking = await prisma.booking.findUnique({
       where: { id: req.params.id }
@@ -507,6 +523,213 @@ app.post('/booking/delete/:id', async (req, res) => {
 
 // === END MY BOOKINGS & CRUD ROUTES ===
 
+// === SESSION AUTHENTICATION ROUTES ===
+
+// GET - Login Page
+app.get('/login', requireGuest, (req, res) => {
+  res.render('login', {
+    title: 'Login - HikeBook',
+    layout: false,
+    error: req.query.error || null,
+    success: req.query.success || null
+  });
+});
+
+// POST - Login Process
+app.post('/login', requireGuest, async (req, res) => {
+  try {
+    const { email, password, remember } = req.body;
+
+    // Validate input
+    if (!email || !password) {
+      return res.redirect('/login?error=Email dan password harus diisi');
+    }
+
+    // Find user by email
+    const user = await prisma.user.findUnique({
+      where: { email: email.toLowerCase() }
+    });
+
+    if (!user) {
+      return res.redirect('/login?error=Email atau password salah');
+    }
+
+    // Verify password
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      return res.redirect('/login?error=Email atau password salah');
+    }
+
+    // Set session
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone
+    };
+
+    // Extend cookie if remember me is checked
+    if (remember) {
+      req.session.cookie.maxAge = 30 * 24 * 60 * 60 * 1000; // 30 days
+    }
+
+    // Redirect to home or intended page
+    const redirectTo = req.session.redirectTo || '/';
+    delete req.session.redirectTo;
+    res.redirect(redirectTo);
+  } catch (error) {
+    console.error('Login error:', error);
+    res.redirect('/login?error=Terjadi kesalahan saat login');
+  }
+});
+
+// GET - Register Page
+app.get('/register', requireGuest, (req, res) => {
+  res.render('register', {
+    title: 'Register - HikeBook',
+    layout: false,
+    error: req.query.error || null
+  });
+});
+
+// POST - Register Process
+app.post('/register', requireGuest, async (req, res) => {
+  try {
+    const { name, email, phone, password, confirmPassword } = req.body;
+
+    // Validate input
+    if (!name || !email || !password || !confirmPassword) {
+      return res.redirect('/register?error=Semua field wajib diisi kecuali telepon');
+    }
+
+    if (password !== confirmPassword) {
+      return res.redirect('/register?error=Password dan konfirmasi password tidak sama');
+    }
+
+    if (password.length < 6) {
+      return res.redirect('/register?error=Password minimal 6 karakter');
+    }
+
+    // Check if email already exists
+    const existingUser = await prisma.user.findUnique({
+      where: { email: email.toLowerCase() }
+    });
+
+    if (existingUser) {
+      return res.redirect('/register?error=Email sudah terdaftar');
+    }
+
+    // Hash password
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    // Create user
+    const user = await prisma.user.create({
+      data: {
+        name: name,
+        email: email.toLowerCase(),
+        phone: phone || null,
+        password: hashedPassword
+      }
+    });
+
+    // Auto login after register
+    req.session.user = {
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      phone: user.phone
+    };
+
+    res.redirect('/?success=Registrasi berhasil! Selamat datang di HikeBook');
+  } catch (error) {
+    console.error('Register error:', error);
+    res.redirect('/register?error=Terjadi kesalahan saat registrasi');
+  }
+});
+
+// POST - Logout
+app.post('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+    }
+    res.redirect('/login?success=Logout berhasil');
+  });
+});
+
+// GET - Logout (alternative)
+app.get('/logout', (req, res) => {
+  req.session.destroy((err) => {
+    if (err) {
+      console.error('Logout error:', err);
+    }
+    res.redirect('/login?success=Logout berhasil');
+  });
+});
+
+// === END SESSION AUTHENTICATION ROUTES ===
+
+// === DEBUG ROUTES (REMOVE IN PRODUCTION!) ===
+
+// Debug: Check session data
+app.get('/debug/session', (req, res) => {
+  res.json({
+    hasSession: !!req.session,
+    sessionID: req.sessionID,
+    user: req.session.user || null,
+    cookie: {
+      maxAge: req.session.cookie.maxAge,
+      expires: req.session.cookie.expires,
+      httpOnly: req.session.cookie.httpOnly,
+      secure: req.session.cookie.secure
+    }
+  });
+});
+
+// Debug: Check if user is logged in
+app.get('/debug/check-auth', (req, res) => {
+  res.json({
+    isAuthenticated: !!req.session.user,
+    user: req.session.user || null,
+    message: req.session.user ? 'User is logged in' : 'User is not logged in'
+  });
+});
+
+// Test: Protected route
+app.get('/test/protected', requireLogin, (req, res) => {
+  res.json({
+    message: 'Access granted! You are logged in.',
+    user: req.session.user
+  });
+});
+
+// Test: Public route
+app.get('/test/public', (req, res) => {
+  res.json({
+    message: 'This is a public route. Anyone can access.',
+    isLoggedIn: !!req.session.user,
+    user: req.session.user || null
+  });
+});
+
+// === END DEBUG ROUTES ===
+
 app.listen(port, () => {
   console.log(`Server berjalan di http://localhost:${port}`);
+  console.log(`\n🧪 Testing URLs:`);
+  console.log(`   - Home: http://localhost:${port}`);
+  console.log(`   - Login: http://localhost:${port}/login`);
+  console.log(`   - Register: http://localhost:${port}/register`);
+  console.log(`   - My Bookings: http://localhost:${port}/my-bookings`);
+  console.log(`\n🔍 Debug URLs (remove in production):`);
+  console.log(`   - Session Info: http://localhost:${port}/debug/session`);
+  console.log(`   - Auth Check: http://localhost:${port}/debug/check-auth`);
+  console.log(`   - Test Protected: http://localhost:${port}/test/protected`);
+  console.log(`   - Test Public: http://localhost:${port}/test/public`);
+  console.log(`\n📚 API Endpoints:`);
+  console.log(`   - POST /api/auth/register`);
+  console.log(`   - POST /api/auth/login`);
+  console.log(`   - GET /api/auth/me (requires token)`);
+  console.log(`   - GET /api/bookings (requires token)`);
+  console.log(`   - POST /api/bookings (requires token)`);
 });

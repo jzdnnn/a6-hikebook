@@ -15,8 +15,7 @@ router.get('/', authenticateToken, async (req, res) => {
         userId: req.user.id
       },
       include: {
-        hikingPackage: true,
-        basecamp: true
+        hikingPackage: true
       },
       orderBy: {
         createdAt: 'desc'
@@ -50,7 +49,6 @@ router.get('/:id', authenticateToken, async (req, res) => {
       },
       include: {
         hikingPackage: true,
-        basecamp: true,
         user: {
           select: {
             id: true,
@@ -89,7 +87,6 @@ router.post('/', authenticateToken, async (req, res) => {
   try {
     const {
       hikingPackageId,
-      basecampId,
       hikingDate,
       numberOfPeople,
       participants,
@@ -105,19 +102,13 @@ router.post('/', authenticateToken, async (req, res) => {
       });
     }
 
-    // Get package/basecamp untuk hitung harga
+    // Get package untuk hitung harga
     let totalPrice = 0;
     if (hikingPackageId) {
       const pkg = await prisma.hikingPackage.findUnique({
         where: { id: hikingPackageId }
       });
       if (pkg) totalPrice += pkg.price * numberOfPeople;
-    }
-    if (basecampId) {
-      const basecamp = await prisma.basecamp.findUnique({
-        where: { id: basecampId }
-      });
-      if (basecamp) totalPrice += basecamp.price * numberOfPeople;
     }
 
     // Generate booking number
@@ -131,7 +122,6 @@ router.post('/', authenticateToken, async (req, res) => {
         customerEmail: req.user.email,
         customerPhone: req.body.customerPhone || '',
         hikingPackageId: hikingPackageId || null,
-        basecampId: basecampId || null,
         hikingDate: new Date(hikingDate),
         numberOfPeople: parseInt(numberOfPeople),
         participants: JSON.stringify(participants || []),
@@ -143,8 +133,7 @@ router.post('/', authenticateToken, async (req, res) => {
         userId: req.user.id
       },
       include: {
-        hikingPackage: true,
-        basecamp: true
+        hikingPackage: true
       }
     });
 
@@ -193,8 +182,7 @@ router.put('/:id', authenticateToken, async (req, res) => {
         notes: req.body.notes
       },
       include: {
-        hikingPackage: true,
-        basecamp: true
+        hikingPackage: true
       }
     });
 

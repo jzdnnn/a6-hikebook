@@ -3,20 +3,84 @@
   heroTitle: 'Selamat Datang di Website Booking Pendakian ' + mountainName,
   heroSubtitle: 'Pilih jalur pendakian yang sesuai dengan kemampuan dan preferensi Anda',
   heroVariant: 'centered',
+  heroBgImage: '/images/hero-bg.png',
+  heroHeight: '500px',
   heroShowButton: true,
   heroButtonText: 'Lihat Semua Jalur',
   heroButtonLink: '#packages'
 }) %>
 
-<!-- Mountain Info Card -->
+<!-- Mountain Info Card with Gallery -->
 <div style="margin-bottom: 30px;">
-  <%- include('components/card', {
-    cardTitle: 'Tentang ' + mountainName,
-    cardContent: '<p>Gunung Gede Pangrango adalah kompleks gunung berapi stratovolcano yang terletak di Jawa Barat dengan ketinggian 2.958 mdpl (Gunung Gede) dan 3.019 mdpl (Gunung Pangrango). Taman Nasional Gunung Gede Pangrango menawarkan berbagai jalur pendakian dengan tingkat kesulitan yang berbeda.</p>',
-    cardVariant: 'simple',
-    cardHoverable: false
-  }) %>
+  <div class="card-component simple">
+    <div class="card-header">
+      <h3 class="card-title">Tentang <%= mountainName %></h3>
+    </div>
+    <div class="card-body">
+      <p>Gunung Gede Pangrango adalah dua gunung berapi yang berada dalam satu kawasan Taman Nasional Gunung Gede Pangrango (TNGGP). Gunung Gede sendiri memiliki ketinggian 2.958 mdpl dengan beberapa kawah, seperti Kawah Ratu, Kawah Baru, dan Kawah Gumuruh. Sedangkan Gunung Pangrango memiliki ketinggian 3.019 mdpl yang letaknya berdampingan dengan Gunung Gede. Salah satu spot favorit para pendaki adalah Alun-alun Surya Kencana yang merupakan dataran savana yang luas dan terkenal dengan hamparan bunga edelweiss atau bunga abadi yang indah. Lokasi ini sering dijadikan tempat berkemah oleh para pendaki sebelum melakukan summit ke puncak Gunung Gede.</p>
+      
+      <div class="gallery-grid">
+        <div class="gallery-item">
+          <img src="/images/gallery/puncak_gede.jpeg" alt="Puncak Gunung Gede">
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery/surken2.jpg" alt="Alun-alun Surya Kencana">
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery/surken.jpg" alt="Alun-alun Surya Kencana">
+        </div>
+        <div class="gallery-item">
+          <img src="/images/gallery/preview.jpg" alt="Preview dari Pendaki">
+        </div>
+      </div>
+    </div>
+  </div>
 </div>
+
+<style>
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 15px;
+    margin-top: 10px;
+  }
+
+  .gallery-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    aspect-ratio: 1;
+    background: #f0f0f0;
+  }
+
+  .gallery-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .gallery-item:hover img {
+    transform: scale(1.1);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .gallery-grid {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 10px;
+    }
+  }
+
+  /* Section Headers */
+  h2 {
+    text-align: center;
+    margin: 40px 0 30px 0;
+    font-size: 2rem;
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+</style>
 
 <!-- Tracks Section -->
 <h2 id="packages">Jalur Pendakian</h2>
@@ -50,53 +114,13 @@
   <% }); %>
 </div>
 
-<!-- Basecamp Section -->
-<h2 id="basecamps" style="margin-top: 50px;">Basecamp</h2>
-
-<div class="package-grid">
-  <% if (typeof basecamps !== 'undefined' && basecamps.length > 0) { %>
-    <% basecamps.forEach(basecamp => { %>
-      <div class="card-component default hoverable">
-        <div class="card-header">
-          <h3 class="card-title"><%= basecamp.name %></h3>
-          <span class="card-badge info">
-            <span style="font-size: 1rem;"></span>
-          </span>
-        </div>
-        
-        <div class="card-body">
-          <p class="description"><%= basecamp.description %></p>
-          <div class="details">
-            <p><strong>Lokasi:</strong> <%= basecamp.address %></p>
-            <p><strong>Kapasitas:</strong> <%= basecamp.capacity %> orang</p>
-            <p><strong>Fasilitas:</strong> <%= basecamp.facilities.join(', ') %></p>
-            <p class="price"><strong>Rp <%= basecamp.pricePerNight.toLocaleString('id-ID') %>/orang/malam</strong></p>
-          </div>
-        </div>
-        
-        <div class="card-footer">
-          <a href="/booking?basecamp=<%= basecamp.id %>" class="btn-component primary block">
-            <span class="btn-icon"></span>
-            Lihat Detail & Booking
-          </a>
-        </div>
-      </div>
-    <% }); %>
-  <% } else { %>
-    <div class="card-component simple">
-      <div class="card-body">
-        <p style="text-align: center; color: #6c757d;">Belum ada data basecamp tersedia.</p>
-      </div>
-    </div>
-  <% } %>
-</div>
-
 <style>
   .package-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 20px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 320px));
+    gap: 25px;
     margin-bottom: 30px;
+    justify-content: center;
   }
   
   .description {
@@ -233,5 +257,23 @@
   
   .btn-icon {
     font-size: 1.2em;
+  }
+
+  /* Package Grid Responsive */
+  @media (max-width: 1024px) {
+    .package-grid {
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    }
+  }
+
+  @media (max-width: 768px) {
+    .package-grid {
+      grid-template-columns: 1fr;
+      gap: 15px;
+    }
+
+    h2 {
+      font-size: 1.5rem;
+    }
   }
 </style>
