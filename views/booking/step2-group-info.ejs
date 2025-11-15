@@ -1,7 +1,7 @@
 ﻿<style>
   .booking-container {
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
   }
   
@@ -170,31 +170,42 @@
   .btn {
     padding: 12px 30px;
     border: none;
-    border-radius: 6px;
-    font-size: 1em;
+    border-radius: 8px;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
   }
   
   .btn-secondary {
     background: #6c757d;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
   }
   
   .btn-secondary:hover {
     background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
   }
   
   .btn-primary {
     background: #2c5f2d;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.3);
     flex: 1;
   }
   
   .btn-primary:hover {
-    background: #1e4520;
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.4);
   }
   
   .input-group {
@@ -227,13 +238,13 @@
   
   <div class="booking-card">
     <div class="customer-info">
-      <strong>� Pemesan:</strong> <%= bookingData.customerName %>
-      <br><strong>� Email:</strong> <%= bookingData.customerEmail %>
-      <br><strong>� Phone:</strong> <%= bookingData.customerPhone %>
-      <br><strong>� Tanggal:</strong> <%= new Date(bookingData.hikingDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
+      <strong>Pemesan:</strong> <%= bookingData.customerName %>
+      <br><strong>Email:</strong> <%= bookingData.customerEmail %>
+      <br><strong>Phone:</strong> <%= bookingData.customerPhone %>
+      <br><strong>Tanggal:</strong> <%= new Date(bookingData.hikingDate).toLocaleDateString('id-ID', { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' }) %>
     </div>
     
-    <h2>� Data Kelompok Pendaki</h2>
+    <h2>Data Kelompok Pendaki</h2>
     <p>Masukkan jumlah peserta dan data anggota kelompok yang akan ikut mendaki.</p>
     
     <form action="/booking/step2" method="POST" id="groupForm">
@@ -291,18 +302,14 @@
         </div>
       </div>
       
-      <button type="button" class="btn-add-participant" id="btnAddParticipant">
-        ➕ Tambah Peserta
-      </button>
-      
       <input type="hidden" name="participants" id="participantsData" />
       
       <div class="form-actions">
         <a href="/booking/step1/<%= bookingData.packageId %>" class="btn btn-secondary">
-          ← Kembali
+          Kembali
         </a>
         <button type="submit" class="btn btn-primary">
-          Lanjut ke Review →
+          Lanjut ke Review
         </button>
       </div>
     </form>
@@ -312,19 +319,74 @@
 <script>
   let participantCount = 1;
   
-  document.getElementById('numberOfPeople').addEventListener('change', function() {
-    const count = parseInt(this.value);
-    updateParticipantFields(count);
-  });
-  
-  document.getElementById('btnAddParticipant').addEventListener('click', function() {
-    const numberOfPeople = parseInt(document.getElementById('numberOfPeople').value);
-    if (participantCount < numberOfPeople) {
-      addParticipantField();
+  // Wait for DOM to be ready
+  document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM Ready - Initializing form');
+    
+    // Initialize form submit handler
+    const form = document.getElementById('groupForm');
+    if (form) {
+      console.log('Form found, attaching submit handler');
+      form.addEventListener('submit', handleFormSubmit);
     } else {
-      alert('Jumlah peserta sudah mencapai batas yang ditentukan');
+      console.error('Form not found!');
+    }
+    
+    // Number of people change handler
+    const numberOfPeopleInput = document.getElementById('numberOfPeople');
+    if (numberOfPeopleInput) {
+      numberOfPeopleInput.addEventListener('change', function() {
+        const count = parseInt(this.value);
+        updateParticipantFields(count);
+      });
     }
   });
+  
+  function handleFormSubmit(e) {
+    e.preventDefault();
+    console.log('Form submit handler called');
+    
+    // Collect participant data
+    const participants = [];
+    const items = document.querySelectorAll('.participant-item');
+    
+    console.log('Found participant items:', items.length);
+    
+    items.forEach((item, index) => {
+      const nameInput = item.querySelector('.participant-name');
+      const ageInput = item.querySelector('.participant-age');
+      const idInput = item.querySelector('.participant-id');
+      
+      const name = nameInput ? nameInput.value : '';
+      const age = ageInput ? ageInput.value : '';
+      const idNumber = idInput ? idInput.value : '';
+      
+      console.log(`Participant ${index + 1}:`, { name, age, idNumber });
+      
+      participants.push({
+        name: name,
+        age: age,
+        idNumber: idNumber
+      });
+    });
+    
+    console.log('All participants:', participants);
+    
+    const participantsJson = JSON.stringify(participants);
+    console.log('Participants JSON:', participantsJson);
+    
+    const hiddenField = document.getElementById('participantsData');
+    if (hiddenField) {
+      hiddenField.value = participantsJson;
+      console.log('Hidden field value set to:', hiddenField.value);
+    } else {
+      console.error('Hidden field not found!');
+    }
+    
+    // Submit the form
+    console.log('Submitting form...');
+    e.target.submit();
+  }
   
   function updateParticipantFields(count) {
     const container = document.getElementById('participantsContainer');
@@ -387,24 +449,6 @@
         `Peserta #${index + 1}${index === 0 ? ' (Pemesan)' : ''}`;
     });
   }
-  
-  document.getElementById('groupForm').addEventListener('submit', function(e) {
-    e.preventDefault();
-    
-    // Collect participant data
-    const participants = [];
-    const items = document.querySelectorAll('.participant-item');
-    
-    items.forEach((item, index) => {
-      participants.push({
-        name: item.querySelector('.participant-name').value,
-        age: item.querySelector('.participant-age').value,
-        idNumber: item.querySelector('.participant-id').value
-      });
-    });
-    
-    document.getElementById('participantsData').value = JSON.stringify(participants);
-    this.submit();
-  });
 </script>
+
 

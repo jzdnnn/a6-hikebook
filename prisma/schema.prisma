@@ -8,16 +8,19 @@ datasource db {
 }
 
 model HikingPackage {
-  id          String    @id @default(uuid())
-  name        String
-  price       Int
-  duration    String
-  difficulty  String
-  distance    String
-  description String
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  bookings    Booking[]
+  id            String    @id @default(uuid())
+  name          String
+  price         Int
+  duration      String
+  difficulty    String
+  distance      String
+  description   String
+  mapsLink      String?
+  mapsEmbedUrl  String?
+  mapImage      String?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+  bookings      Booking[]
 }
 
 model User {

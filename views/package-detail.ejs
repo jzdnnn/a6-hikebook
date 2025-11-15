@@ -1,7 +1,7 @@
 ﻿<style>
   .package-detail-container {
-    max-width: 900px;
-    margin: 40px auto;
+    max-width: 100%;
+    margin: 0;
     padding: 20px;
   }
   
@@ -97,17 +97,28 @@
     color: #2c5f2d;
   }
   
+  .two-column-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-bottom: 30px;
+    align-items: stretch;
+  }
+  
   .package-description {
     background: white;
     border-radius: 10px;
     padding: 30px;
-    margin-bottom: 30px;
     box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
   }
   
   .package-description h2 {
     color: #2c5f2d;
     margin-bottom: 15px;
+    font-size: 1.5rem;
   }
 
   .package-description h3 {
@@ -127,18 +138,323 @@
     align-items: center;
   }
   
-  .booking-section {
+  .location-info {
     background: #f8f9fa;
+    padding: 1.5rem;
+    border-radius: 12px;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .location-name {
+    font-size: 1rem;
+    color: #333;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    background: white;
+    border-radius: 8px;
+    border-left: 4px solid #2c5f2d;
+  }
+  
+  .map-container-embed {
+    margin: 1rem 0;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    flex: 1;
+    min-height: 300px;
+  }
+  
+  .map-container-embed iframe {
+    width: 100%;
+    height: 100%;
+    min-height: 300px;
+  }
+  
+  .map-actions {
+    display: flex;
+    justify-content: center;
+    margin: 1rem 0 0 0;
+  }
+  
+  .btn-map {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.875rem 2rem;
+    background: #2c5f2d;
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: 600;
+    transition: all 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    font-size: 1rem;
+  }
+  
+  .btn-map:hover {
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+  }
+  
+  .btn-directions {
+    background: #97bc62;
+  }
+  
+  .btn-directions:hover {
+    background: #7a9d4d;
+  }
+  
+  .btn-icon-img-inline {
+    width: 20px;
+    height: 20px;
+    object-fit: contain;
+  }
+  
+  .location-tips {
+    background: white;
+    padding: 1.5rem;
+    border-radius: 8px;
+    margin-top: 1.5rem;
+  }
+  
+  .location-tips h4 {
+    color: #2c5f2d;
+    margin-bottom: 1rem;
+    font-size: 1.1rem;
+  }
+  
+  .location-tips ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  .location-tips li {
+    padding: 0.5rem 0 0.5rem 1.5rem;
+    position: relative;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .location-tips li:before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  .trail-map-section {
+    background: white;
     border-radius: 10px;
     padding: 30px;
-    text-align: center;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .trail-map-section h2 {
+    color: #2c5f2d;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .trail-map-description {
+    color: #666;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+  
+  .trail-map-container {
+    background: #f8f9fa;
+    border-radius: 12px;
+    padding: 15px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    height: 550px;
+  }
+  
+  .trail-map-image {
+    width: 100%;
+    height: 100%;
+    max-height: 520px;
+    object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: transform 0.3s ease;
+  }
+  
+  .trail-map-image:hover {
+    transform: scale(1.02);
+    cursor: zoom-in;
+  }
+  
+  .obligations-section {
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  
+  .obligations-section h2 {
+    color: #2c5f2d;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .obligations-intro {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .obligations-list {
+    counter-reset: obligation-counter;
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .obligations-list > li {
+    counter-increment: obligation-counter;
+    padding-left: 40px;
+    position: relative;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #333;
+  }
+  
+  .obligations-list > li:before {
+    content: counter(obligation-counter) ".";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #2c5f2d;
+    font-size: 1rem;
+  }
+  
+  .obligations-list ul {
+    margin: 10px 0;
+    padding-left: 25px;
+    list-style: none;
+  }
+  
+  .obligations-list ul li {
+    padding: 5px 0;
+    position: relative;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .obligations-list ul li:before {
+    content: "•";
+    position: absolute;
+    left: -15px;
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+  
+  @media (max-width: 1024px) {
+    .two-column-section {
+      grid-template-columns: 1fr;
+    }
+    
+    .package-description,
+    .trail-map-section {
+      margin-bottom: 30px;
+    }
+  }
+  
+  @media (max-width: 768px) {
+    .trail-map-section {
+      padding: 25px 20px;
+    }
+    
+    .trail-map-container {
+      padding: 15px;
+    }
+    
+    .package-description {
+      padding: 25px 20px;
+    }
+    
+    .obligations-section {
+      padding: 25px 20px;
+    }
+    
+    .obligations-section h2 {
+      font-size: 1.3rem;
+    }
+    
+    .obligations-intro {
+      font-size: 0.95rem;
+    }
+    
+    .obligations-list > li {
+      padding-left: 30px;
+      font-size: 0.95rem;
+    }
+    
+    .booking-section {
+      flex-direction: column;
+      padding: 20px;
+    }
+    
+    .btn-book-now,
+    .btn-back {
+      width: 100%;
+      padding: 12px 30px;
+      font-size: 1rem;
+    }
+  }
+  
+  .booking-section {
+    background: white;
+    border-radius: 10px;
+    padding: 30px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
   }
   
   .btn-book-now {
     background: #2c5f2d;
     color: white;
-    padding: 15px 50px;
-    font-size: 1.2em;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.3);
+  }
+  
+  .btn-book-now:hover {
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.4);
+  }
+  
+  .btn-back {
+    background: #6c757d;
+    color: white;
+    padding: 15px 40px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
@@ -147,27 +463,15 @@
     align-items: center;
     justify-content: center;
     transition: all 0.3s ease;
-  }
-  
-  .btn-book-now:hover {
-    background: #1e4520;
-    transform: scale(1.05);
-  }
-  
-  .btn-back {
-    background: #6c757d;
-    color: white;
-    padding: 10px 25px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-block;
-    margin-right: 15px;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
   }
   
   .btn-back:hover {
     background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
   }
   
   .difficulty-badge {
@@ -221,59 +525,101 @@
     </div>
   </div>
   
-  <div class="package-description">
-    <h2>
-      <img src="/images/icons/info-icon.png" alt="Info" class="section-icon-img"> Deskripsi Paket
-    </h2>
-    <p><%= package.description %></p>
+  <div class="two-column-section">
+    <div class="package-description">
+      <h2>Akses Pintu Pendakian</h2>
+      
+      <div class="location-info">
+        
+        <div class="map-container-embed">
+          <iframe src="<%= package.mapsEmbedUrl %>" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+        
+        <div class="map-actions">
+          <a href="<%= package.mapsLink %>" target="_blank" class="btn-map">
+            Buka di Google Maps
+          </a>
+        </div>
+      </div>
+    </div>
     
-    <h3>Yang Termasuk dalam Paket:</h3>
-    <ul>
-      <li>
-        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Tiket masuk kawasan
-      </li>
-      <li>
-        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Pemandu lokal berpengalaman
-      </li>
-      <li>
-        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Asuransi perjalanan
-      </li>
-      <li>
-        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Sertifikat pendakian
-      </li>
-      <li>
-        <img src="/images/icons/check-icon.png" alt="Check" class="list-icon-img"> Dokumentasi foto
-      </li>
-    </ul>
+    <div class="trail-map-section">
+      <h2>Peta Jalur Pendakian</h2>
+      
+      <div class="trail-map-container">
+        <img src="<%= package.mapImage %>" alt="Peta Jalur Pendakian Gunung Gede" class="trail-map-image">
+      </div>
+    </div>
+  </div>
+  
+  <div class="obligations-section">
+    <h2>Kewajiban Pendaki</h2>
+    <p class="obligations-intro">Setiap pendaki diwajibkan:</p>
     
-    <h3>Yang Perlu Disiapkan:</h3>
-    <ul>
-      <li>
-        <img src="/images/icons/id-card-icon.png" alt="ID Card" class="list-icon-img"> KTP/Identitas diri
+    <ol class="obligations-list">
+      <li>Mematuhi semua peraturan pendakian yang berlaku di TNGGP</li>
+      <li>Membawa/menggunakan perlengkapan pendakian yang sesuai dengan standar, diantaranya:
+        <ul>
+          <li>Tenda kedap air</li>
+          <li>Ransel/carier</li>
+          <li>Matras/alas tidur</li>
+          <li>Kantung tidur (sleeping bag)</li>
+          <li>Sarung tangan</li>
+          <li>Kaos kaki yang sesuai</li>
+          <li>Pakaian yang sesuai untuk mendaki gunung (baju, celana, sepatu, dsb)</li>
+          <li>Jas hujan</li>
+          <li>Senter/lampu penerangan</li>
+          <li>Peralatan memasak sesuai kebutuhan</li>
+          <li>Obat-obatan pribadi</li>
+        </ul>
       </li>
-      <li>
-        <img src="/images/icons/backpack-icon.png" alt="Backpack" class="list-icon-img"> Perlengkapan pribadi (tas carrier, sleeping bag, dll)
+      <li>Membawa kantong sampah (trash bag) yang sesuai dengan ukuran yang cukup untuk setiap kelompoknya</li>
+      <li>Mengisi form isian barang bawaan yang menghasilkan sampah sebelum melakukan pendakian</li>
+      <li>Melengkapi syarat-syarat pendakian saat akan melakukan pendakian di pintu masuk, diantaranya:
+        <ul>
+          <li>Keterangan kesehatan sesuai SOP kesehatan</li>
+          <li>Pernyataan pendakian sesuai form</li>
+          <li>Surat izin orang tua/wali bagi pendaki usia kurang dari 17 tahun</li>
+        </ul>
       </li>
-      <li>
-        <img src="/images/icons/medicine-icon.png" alt="Medicine" class="list-icon-img"> Obat-obatan pribadi
+      <li>Melakukan EVAKUASI MANDIRI kepada rekannya yang sakit dan atau mengalami kecelakaan</li>
+      <li>Setiap kelompok calon pendaki diwajibkan membuat surat pernyataan tanggung jawab mutlak kegiatan pendakian yang dilampiri materai nilai yang cukup (sebagaimana format surat pernyataan pendakian)</li>
+    </ol>
+  </div>
+  
+  <div class="obligations-section">
+    <h2>Ketentuan</h2>
+    
+    <ol class="obligations-list">
+      <li>Pembayaran biaya tiket pendakian dilakukan sesuai dengan ketentuan yang ditetapkan TNGGP dan biaya yang sudah dibayarkan tidak dapat dikembalikan</li>
+      <li>Balai Besar TNGGP dapat melakukan penutupan pendakian apabila diperlukan dan sesuai dengan kebijakan Kepala Balai Besar TNGGP</li>
+      <li>Pintu masuk/keluar pendakian resmi:
+        <ul>
+          <li>Pintu Cibodas</li>
+          <li>Pintu Gunung Putri</li>
+          <li>Pintu Selabintana</li>
+        </ul>
       </li>
-      <li>
-        <img src="/images/icons/food-icon.png" alt="Food" class="list-icon-img"> Bekal makanan dan minuman
+      <li>Lapor pada pintu masuk pendakian pada jam yang sudah ditentukan:
+        <ul>
+          <li>Hari kerja 07:30 s.d. 14:00 WIB</li>
+          <li>Hari libur 07:00 s.d. 16:00 WIB</li>
+        </ul>
       </li>
-      <li>
-        <img src="/images/icons/clothes-icon.png" alt="Clothes" class="list-icon-img"> Pakaian hangat dan tahan cuaca
+      <li>Lapor pada pintu keluar pendakian pada jam yang sudah ditentukan:
+        <ul>
+          <li>Hari kerja 10:00 s.d. 16:00 WIB</li>
+          <li>Hari libur 10:00 s.d. 18:00 WIB</li>
+        </ul>
       </li>
-    </ul>
+      <li>Wanita yang sedang mengalami menstruasi atau hamil disarankan untuk tidak melakukan pendakian</li>
+    </ol>
   </div>
   
   <div class="booking-section">
-    <h2>Siap untuk Petualangan?</h2>
-    <p>Pesan sekarang dan mulai perjalanan hiking Anda!</p>
-    <div style="margin-top: 20px;">
-      <a href="/" class="btn-back"> Kembali</a>
-      <a href="/booking/step1/<%= package.id %>" class="btn-book-now">
-        <img src="/images/icons/backpack-icon.png" alt="Backpack" class="btn-icon-img"> Pesan Sekarang
-      </a>
-    </div>
+    <a href="/" class="btn-back">Kembali</a>
+    <a href="/booking/step1/<%= package.id %>" class="btn-book-now">
+      Lanjutkan
+    </a>
   </div>
 </div>

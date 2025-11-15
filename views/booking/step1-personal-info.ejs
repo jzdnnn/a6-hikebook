@@ -1,7 +1,7 @@
 ﻿<style>
   .booking-container {
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
   }
   
@@ -143,20 +143,49 @@
   .btn-secondary {
     background: #6c757d;
     color: white;
+    padding: 15px 40px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+    font-size: 1.1rem;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
   }
   
   .btn-secondary:hover {
     background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
   }
   
   .btn-primary {
     background: #2c5f2d;
     color: white;
+    padding: 15px 40px;
+    font-size: 1.1rem;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    transition: all 0.3s ease;
+    font-weight: 600;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.3);
     flex: 1;
   }
   
   .btn-primary:hover {
-    background: #1e4520;
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.4);
   }
 </style>
 
@@ -184,13 +213,13 @@
   <div class="booking-card">
     <!-- Package Summary -->
     <div class="package-summary">
-      <h3>� Paket yang Dipilih</h3>
+      <h3>Jalur yang Dipilih</h3>
       <p><strong><%= package.name %></strong></p>
-      <p>� Rp <%= package.price.toLocaleString('id-ID') %> / orang</p>
-      <p>⏱️ <%= package.duration %> | � <%= package.distance %></p>
+      <p>Rp <%= package.price.toLocaleString('id-ID') %> / orang</p>
+      <p><%= package.duration %> | <%= package.distance %></p>
     </div>
     
-    <h2>� Data Pemesan</h2>
+    <h2>Data Pemesan</h2>
     <p>Silakan isi data diri Anda sebagai pemesan utama.</p>
     
     <form action="/booking/step1" method="POST">
@@ -256,10 +285,10 @@
       
       <div class="form-actions">
         <a href="/package/<%= package.id %>" class="btn btn-secondary">
-          ← Kembali
+          Kembali
         </a>
         <button type="submit" class="btn btn-primary">
-          Lanjut ke Data Kelompok →
+          Lanjut ke Data Kelompok
         </button>
       </div>
     </form>

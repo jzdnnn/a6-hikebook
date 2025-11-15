@@ -138,6 +138,17 @@ app.get('/info-jalur', async (req, res) => {
   });
 });
 
+// Rules page
+app.get('/rules', async (req, res) => {
+  const sidebarHtml = await renderArea('sidebar');
+  
+  res.render('rules', {
+    title: 'Peraturan Pendakian',
+    layout: 'layouts/main-with-sidebar',
+    sidebarHtml: sidebarHtml
+  });
+});
+
 // === BOOKING FLOW ROUTES ===
 
 // Detail Paket Hiking
@@ -151,10 +162,13 @@ app.get('/package/:id', async (req, res) => {
       return res.status(404).send('Paket tidak ditemukan');
     }
     
+    const sidebarHtml = await renderArea('sidebar');
+    
     res.render('package-detail', {
       title: `${packageData.name} - Detail Paket`,
       package: packageData,
-      layout: 'layout'
+      layout: 'layouts/main-with-sidebar',
+      sidebarHtml: sidebarHtml
     });
   } catch (error) {
     console.error('Error fetching package:', error);
@@ -180,10 +194,12 @@ app.get('/booking/step1/:packageId', async (req, res) => {
       packagePrice: packageData.price
     };
     
+    const sidebarHtml = await renderArea('sidebar');
     res.render('booking/step1-personal-info', {
       title: 'Booking - Data Diri',
       package: packageData,
-      layout: 'layout'
+      layout: 'layouts/main-with-sidebar',
+      sidebarHtml: sidebarHtml
     });
   } catch (error) {
     console.error('Error:', error);
@@ -213,21 +229,27 @@ app.post('/booking/step1', async (req, res) => {
 });
 
 // Step 2: Form Data Kelompok
-app.get('/booking/step2', (req, res) => {
+app.get('/booking/step2', async (req, res) => {
   if (!req.session.bookingData) {
     return res.redirect('/');
   }
   
+  const sidebarHtml = await renderArea('sidebar');
   res.render('booking/step2-group-info', {
     title: 'Booking - Data Kelompok',
     bookingData: req.session.bookingData,
-    layout: 'layout'
+    layout: 'layouts/main-with-sidebar',
+    sidebarHtml: sidebarHtml
   });
 });
 
 // Step 2: Process Form Data Kelompok
 app.post('/booking/step2', (req, res) => {
   const { numberOfPeople, participants } = req.body;
+  
+  console.log('Step 2 - Received numberOfPeople:', numberOfPeople);
+  console.log('Step 2 - Received participants (raw):', participants);
+  console.log('Step 2 - Type of participants:', typeof participants);
   
   if (!numberOfPeople || numberOfPeople < 1) {
     return res.status(400).send('Jumlah peserta minimal 1');
@@ -236,9 +258,14 @@ app.post('/booking/step2', (req, res) => {
   // Parse participants data
   let participantsList = [];
   try {
-    participantsList = typeof participants === 'string' 
-      ? JSON.parse(participants) 
-      : participants;
+    if (participants && participants.trim() !== '') {
+      participantsList = typeof participants === 'string' 
+        ? JSON.parse(participants) 
+        : participants;
+      console.log('Step 2 - Parsed participants:', participantsList);
+    } else {
+      console.log('Step 2 - Participants is empty or undefined');
+    }
   } catch (error) {
     console.error('Error parsing participants:', error);
   }
@@ -248,6 +275,8 @@ app.post('/booking/step2', (req, res) => {
     numberOfPeople: parseInt(numberOfPeople),
     participants: participantsList
   };
+  
+  console.log('Step 2 - Session after save:', req.session.bookingData);
   
   res.redirect('/booking/review');
 });
@@ -266,12 +295,17 @@ app.get('/booking/review', async (req, res) => {
     const bookingData = req.session.bookingData;
     const totalPrice = packageData.price * bookingData.numberOfPeople;
     
+    // Debug: log booking data to see what's in session
+    console.log('Booking Data in Review:', JSON.stringify(bookingData, null, 2));
+    
+    const sidebarHtml = await renderArea('sidebar');
     res.render('booking/step3-review', {
       title: 'Review Booking',
       package: packageData,
       bookingData: bookingData,
       totalPrice: totalPrice,
-      layout: 'layout'
+      layout: 'layouts/main-with-sidebar',
+      sidebarHtml: sidebarHtml
     });
   } catch (error) {
     console.error('Error:', error);
@@ -305,12 +339,14 @@ app.get('/booking/payment', async (req, res) => {
     const bookingData = req.session.bookingData;
     const totalPrice = packageData.price * bookingData.numberOfPeople;
     
+    const sidebarHtml = await renderArea('sidebar');
     res.render('booking/step4-payment', {
       title: 'Payment',
       package: packageData,
       bookingData: bookingData,
       totalPrice: totalPrice,
-      layout: 'layout'
+      layout: 'layouts/main-with-sidebar',
+      sidebarHtml: sidebarHtml
     });
   } catch (error) {
     console.error('Error:', error);

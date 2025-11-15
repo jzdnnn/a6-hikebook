@@ -1,0 +1,177 @@
+<style>
+  .rules-container {
+    max-width: 100%;
+    margin: 0;
+    padding: 20px;
+  }
+
+  .page-header {
+    text-align: center;
+    margin-bottom: 40px;
+  }
+
+  .page-header h1 {
+    color: #2c5f2d;
+    font-size: 2.5rem;
+    margin-bottom: 10px;
+  }
+
+  .page-header p {
+    color: #666;
+    font-size: 1.1rem;
+  }
+
+  .obligations-section {
+    background: white;
+    border-radius: 10px;
+    padding: 40px;
+    margin-bottom: 30px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  }
+  
+  .obligations-section h2 {
+    color: #2c5f2d;
+    margin-bottom: 10px;
+    font-size: 1.5rem;
+  }
+  
+  .obligations-intro {
+    color: #333;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+  
+  .obligations-list {
+    counter-reset: obligation-counter;
+    padding-left: 0;
+    list-style: none;
+  }
+  
+  .obligations-list > li {
+    counter-increment: obligation-counter;
+    padding-left: 40px;
+    position: relative;
+    margin-bottom: 15px;
+    line-height: 1.8;
+    color: #333;
+  }
+  
+  .obligations-list > li:before {
+    content: counter(obligation-counter) ".";
+    position: absolute;
+    left: 0;
+    font-weight: bold;
+    color: #2c5f2d;
+    font-size: 1rem;
+  }
+  
+  .obligations-list ul {
+    margin: 10px 0;
+    padding-left: 25px;
+    list-style: none;
+  }
+  
+  .obligations-list ul li {
+    padding: 5px 0;
+    position: relative;
+    color: #555;
+    line-height: 1.6;
+  }
+  
+  .obligations-list ul li:before {
+    content: "•";
+    position: absolute;
+    left: -15px;
+    color: #2c5f2d;
+    font-weight: bold;
+  }
+
+  @media (max-width: 768px) {
+    .page-header h1 {
+      font-size: 2rem;
+    }
+
+    .obligations-section {
+      padding: 20px;
+    }
+
+    .obligations-section h2 {
+      font-size: 1.3rem;
+    }
+  }
+</style>
+
+<div class="rules-container">
+  <!-- Page Header -->
+  <div class="page-header">
+    <h1>Peraturan Pendakian</h1>
+    <p>Taman Nasional Gunung Gede Pangrango (TNGGP)</p>
+  </div>
+
+  <!-- Kewajiban Pendaki -->
+  <div class="obligations-section">
+    <h2>Kewajiban Pendaki</h2>
+    <p class="obligations-intro">Setiap pendaki diwajibkan:</p>
+    
+    <ol class="obligations-list">
+      <li>Mematuhi semua peraturan pendakian yang berlaku di TNGGP</li>
+      <li>Membawa/menggunakan perlengkapan pendakian yang sesuai dengan standar, diantaranya:
+        <ul>
+          <li>Tenda kedap air</li>
+          <li>Ransel/carier</li>
+          <li>Matras/alas tidur</li>
+          <li>Kantung tidur (sleeping bag)</li>
+          <li>Sarung tangan</li>
+          <li>Kaos kaki yang sesuai</li>
+          <li>Pakaian yang sesuai untuk mendaki gunung (baju, celana, sepatu, dsb)</li>
+          <li>Jas hujan</li>
+          <li>Senter/lampu penerangan</li>
+          <li>Peralatan memasak sesuai kebutuhan</li>
+          <li>Obat-obatan pribadi</li>
+        </ul>
+      </li>
+      <li>Membawa kantong sampah (trash bag) yang sesuai dengan ukuran yang cukup untuk setiap kelompoknya</li>
+      <li>Mengisi form isian barang bawaan yang menghasilkan sampah sebelum melakukan pendakian</li>
+      <li>Melengkapi syarat-syarat pendakian saat akan melakukan pendakian di pintu masuk, diantaranya:
+        <ul>
+          <li>Keterangan kesehatan sesuai SOP kesehatan</li>
+          <li>Pernyataan pendakian sesuai form</li>
+          <li>Surat izin orang tua/wali bagi pendaki usia kurang dari 17 tahun</li>
+        </ul>
+      </li>
+      <li>Melakukan EVAKUASI MANDIRI kepada rekannya yang sakit dan atau mengalami kecelakaan</li>
+      <li>Setiap kelompok calon pendaki diwajibkan membuat surat pernyataan tanggung jawab mutlak kegiatan pendakian yang dilampiri materai nilai yang cukup (sebagaimana format surat pernyataan pendakian)</li>
+    </ol>
+  </div>
+  
+  <!-- Ketentuan -->
+  <div class="obligations-section">
+    <h2>Ketentuan</h2>
+    
+    <ol class="obligations-list">
+      <li>Pembayaran biaya tiket pendakian dilakukan sesuai dengan ketentuan yang ditetapkan TNGGP dan biaya yang sudah dibayarkan tidak dapat dikembalikan</li>
+      <li>Balai Besar TNGGP dapat melakukan penutupan pendakian apabila diperlukan dan sesuai dengan kebijakan Kepala Balai Besar TNGGP</li>
+      <li>Pintu masuk/keluar pendakian resmi:
+        <ul>
+          <li>Pintu Cibodas</li>
+          <li>Pintu Gunung Putri</li>
+          <li>Pintu Selabintana</li>
+        </ul>
+      </li>
+      <li>Lapor pada pintu masuk pendakian pada jam yang sudah ditentukan:
+        <ul>
+          <li>Hari kerja 07:30 s.d. 14:00 WIB</li>
+          <li>Hari libur 07:00 s.d. 16:00 WIB</li>
+        </ul>
+      </li>
+      <li>Lapor pada pintu keluar pendakian pada jam yang sudah ditentukan:
+        <ul>
+          <li>Hari kerja 10:00 s.d. 16:00 WIB</li>
+          <li>Hari libur 10:00 s.d. 18:00 WIB</li>
+        </ul>
+      </li>
+      <li>Wanita yang sedang mengalami menstruasi atau hamil disarankan untuk tidak melakukan pendakian</li>
+    </ol>
+  </div>
+</div>

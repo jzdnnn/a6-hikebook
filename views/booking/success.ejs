@@ -140,34 +140,50 @@
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+  
+  .btn-icon {
+    width: 20px;
+    height: 20px;
   }
   
   .btn-primary {
     background: #2c5f2d;
     color: white;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.3);
   }
   
   .btn-primary:hover {
-    background: #1e4520;
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.4);
   }
   
   .btn-success {
-    background: #28a745;
+    background: #25D366;
     color: white;
+    box-shadow: 0 2px 6px rgba(37, 211, 102, 0.3);
   }
   
   .btn-success:hover {
-    background: #218838;
+    background: #1da851;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(37, 211, 102, 0.4);
   }
   
   .btn-info {
-    background: #17a2b8;
+    background: #4285F4;
     color: white;
+    box-shadow: 0 2px 6px rgba(66, 133, 244, 0.3);
   }
   
   .btn-info:hover {
-    background: #138496;
+    background: #3367D6;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(66, 133, 244, 0.4);
   }
   
   .action-buttons {
@@ -195,7 +211,6 @@
 <div class="success-container">
   <!-- Success Header -->
   <div class="success-header">
-    <div class="success-icon">✅</div>
     <h1>Booking Berhasil!</h1>
     <p>Terima kasih, booking Anda telah kami terima</p>
     <div class="booking-number">
@@ -209,9 +224,9 @@
   <!-- Booking Details -->
   <div class="success-card">
     <div class="info-section">
-      <h3>� Detail Booking</h3>
+      <h3>Detail Booking</h3>
       <div class="info-row">
-        <span class="info-label">Paket</span>
+        <span class="info-label">Jalur</span>
         <span class="info-value"><%= booking.hikingPackage.name %></span>
       </div>
       <div class="info-row">
@@ -232,7 +247,7 @@
         <span class="info-label">Status Pembayaran</span>
         <span class="info-value">
           <span class="status-badge status-pending">
-            <%= booking.paymentStatus === 'pending' ? '⏳ Menunggu Pembayaran' : booking.paymentStatus %>
+            <%= booking.paymentStatus === 'pending' ? 'Menunggu Pembayaran' : booking.paymentStatus %>
           </span>
         </span>
       </div>
@@ -240,14 +255,14 @@
         <span class="info-label">Status Booking</span>
         <span class="info-value">
           <span class="status-badge status-pending">
-            <%= booking.bookingStatus === 'pending' ? '⏳ Menunggu Konfirmasi' : booking.bookingStatus %>
+            <%= booking.bookingStatus === 'pending' ? 'Menunggu Konfirmasi' : booking.bookingStatus %>
           </span>
         </span>
       </div>
     </div>
     
     <div class="info-section">
-      <h3>� Data Pemesan</h3>
+      <h3>Data Pemesan</h3>
       <div class="info-row">
         <span class="info-label">Nama</span>
         <span class="info-value"><%= booking.customerName %></span>
@@ -264,7 +279,7 @@
     
     <% if (booking.participantsList && booking.participantsList.length > 0) { %>
       <div class="info-section">
-        <h3>👥 Peserta Pendakian</h3>
+        <h3>Peserta Pendakian</h3>
         <div class="participants-summary">
           <% booking.participantsList.forEach((participant, index) => { %>
             <div class="participant-item">
@@ -281,7 +296,7 @@
   <!-- Next Steps -->
   <div class="success-card">
     <div class="next-steps">
-      <h4>📋 Langkah Selanjutnya</h4>
+      <h4>Informasi Tambahan</h4>
       <ol>
         <li>Kami sedang memverifikasi pembayaran Anda</li>
         <li>Konfirmasi booking akan dikirim ke email <strong><%= booking.customerEmail %></strong> dalam 1x24 jam</li>
@@ -292,16 +307,18 @@
     </div>
     
     <div class="contact-info">
-      <h4>� Butuh Bantuan?</h4>
+      <h4>Butuh Bantuan?</h4>
       <p>Tim kami siap membantu Anda</p>
       <div class="contact-buttons">
         <a href="https://wa.me/6281234567890?text=Halo%20saya%20booking%20dengan%20nomor%20<%= booking.bookingNumber %>" 
            class="btn btn-success" target="_blank">
-          � WhatsApp
+          <img src="/images/icons/whatsapp-icon.png" alt="WhatsApp" class="btn-icon">
+          WhatsApp
         </a>
         <a href="mailto:support@hikebook.com?subject=Booking%20<%= booking.bookingNumber %>" 
            class="btn btn-info">
-          � Email
+          <img src="/images/icons/email-icon.png" alt="Email" class="btn-icon">
+          Email
         </a>
       </div>
     </div>
@@ -310,10 +327,10 @@
   <!-- Action Buttons -->
   <div class="action-buttons">
     <a href="/" class="btn btn-primary">
-      🏠 Kembali ke Beranda
+      Kembali ke Beranda
     </a>
     <button onclick="window.print()" class="btn btn-info">
-      �️ Cetak Bukti Booking
+      Cetak Bukti Booking
     </button>
   </div>
 </div>

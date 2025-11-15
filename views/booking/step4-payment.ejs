@@ -1,7 +1,7 @@
 ﻿<style>
   .booking-container {
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
   }
   
@@ -142,10 +142,18 @@
     border-radius: 4px;
     cursor: pointer;
     margin-left: 10px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
   }
   
   .copy-btn:hover {
     background: #1e4520;
+  }
+  
+  .copy-btn img {
+    width: 16px;
+    height: 16px;
   }
   
   .instructions {
@@ -182,31 +190,42 @@
     padding: 12px 30px;
     border: none;
     border-radius: 6px;
-    font-size: 1em;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
   }
   
   .btn-secondary {
     background: #6c757d;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
   }
   
   .btn-secondary:hover {
     background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
   }
   
   .btn-success {
     background: #28a745;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(40, 167, 69, 0.3);
     flex: 1;
-    font-size: 1.1em;
+    font-size: 1.1rem;
   }
   
   .btn-success:hover {
     background: #218838;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(40, 167, 69, 0.4);
   }
   
   .countdown {
@@ -248,14 +267,14 @@
   
   <!-- Countdown Timer -->
   <div class="countdown">
-    ⏰ Selesaikan pembayaran dalam
+    Selesaikan pembayaran dalam
     <div class="countdown-timer" id="countdown">23:59:45</div>
   </div>
   
   <div class="booking-card">
     <!-- Payment Summary -->
     <div class="payment-summary">
-      <h2 style="margin-top: 0;">� Total Pembayaran</h2>
+      <h2 style="margin-top: 0;">Total Pembayaran</h2>
       <div class="payment-amount">Rp <%= totalPrice.toLocaleString('id-ID') %></div>
       <p><%= package.name %> - <%= bookingData.numberOfPeople %> orang</p>
     </div>
@@ -263,18 +282,16 @@
     <!-- Payment Method -->
     <div class="payment-method-display">
       <% if (bookingData.paymentMethod === 'transfer_bank') { %>
-        🏦 Transfer Bank
+        Transfer Bank
       <% } else if (bookingData.paymentMethod === 'e_wallet') { %>
-        � E-Wallet
-      <% } else if (bookingData.paymentMethod === 'credit_card') { %>
-        � Kartu Kredit/Debit
+        E-Wallet
       <% } %>
     </div>
     
     <!-- Bank Transfer Details -->
     <% if (bookingData.paymentMethod === 'transfer_bank') { %>
       <div class="payment-info">
-        <h3>� Rekening Tujuan Transfer</h3>
+        <h3>Rekening Tujuan Transfer</h3>
         <p>Silakan transfer ke salah satu rekening di bawah ini:</p>
         
         <div class="bank-accounts">
@@ -284,7 +301,10 @@
               <div class="account-number">1234567890</div>
               <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
             </div>
-            <button class="copy-btn" onclick="copyAccount('1234567890')">� Copy</button>
+            <button class="copy-btn" onclick="copyAccount('1234567890')">
+              <img src="/images/icons/copy-icon.png" alt="Copy" style="width: 16px; height: 16px; margin-right: 5px;">
+              Copy
+            </button>
           </div>
           
           <div class="bank-item">
@@ -293,7 +313,10 @@
               <div class="account-number">0987654321</div>
               <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
             </div>
-            <button class="copy-btn" onclick="copyAccount('0987654321')">� Copy</button>
+            <button class="copy-btn" onclick="copyAccount('0987654321')">
+              <img src="/images/icons/copy-icon.png" alt="Copy" style="width: 16px; height: 16px; margin-right: 5px;">
+              Copy
+            </button>
           </div>
           
           <div class="bank-item">
@@ -302,7 +325,10 @@
               <div class="account-number">1122334455</div>
               <div style="font-size: 0.9em; color: #666;">a.n. PT HikeBook Indonesia</div>
             </div>
-            <button class="copy-btn" onclick="copyAccount('1122334455')">� Copy</button>
+            <button class="copy-btn" onclick="copyAccount('1122334455')">
+              <img src="/images/icons/copy-icon.png" alt="Copy" style="width: 16px; height: 16px; margin-right: 5px;">
+              Copy
+            </button>
           </div>
         </div>
       </div>
@@ -311,7 +337,7 @@
     <!-- E-Wallet Details -->
     <% if (bookingData.paymentMethod === 'e_wallet') { %>
       <div class="payment-info">
-        <h3>� Nomor E-Wallet</h3>
+        <h3>Nomor E-Wallet</h3>
         <div class="bank-accounts">
           <div class="bank-item">
             <div>
@@ -319,27 +345,18 @@
               <div class="account-number">0812-3456-7890</div>
               <div style="font-size: 0.9em; color: #666;">a.n. HikeBook Indonesia</div>
             </div>
-            <button class="copy-btn" onclick="copyAccount('081234567890')">� Copy</button>
+            <button class="copy-btn" onclick="copyAccount('081234567890')">
+              <img src="/images/icons/copy-icon.png" alt="Copy" style="width: 16px; height: 16px; margin-right: 5px;">
+              Copy
+            </button>
           </div>
-        </div>
-      </div>
-    <% } %>
-    
-    <!-- Credit Card Details -->
-    <% if (bookingData.paymentMethod === 'credit_card') { %>
-      <div class="payment-info">
-        <h3>� Simulasi Pembayaran Kartu Kredit</h3>
-        <p>Dalam implementasi production, di sini akan muncul payment gateway (Midtrans, Xendit, dll)</p>
-        <div style="text-align: center; padding: 40px; background: #f8f9fa; border-radius: 8px;">
-          <p style="font-size: 1.2em;">� Payment Gateway Integration</p>
-          <p style="color: #666;">Untuk demo, klik tombol "Konfirmasi Pembayaran" di bawah</p>
         </div>
       </div>
     <% } %>
     
     <!-- Instructions -->
     <div class="instructions">
-      <h4>� Instruksi Pembayaran</h4>
+      <h4>Instruksi Pembayaran</h4>
       <ol>
         <li>Transfer sesuai jumlah <strong>TOTAL PEMBAYARAN</strong> di atas</li>
         <li>Pastikan nominal transfer <strong>TEPAT</strong> agar mudah diverifikasi</li>
@@ -351,9 +368,9 @@
     
     <!-- Booking Details -->
     <div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0;">
-      <strong>� Konfirmasi akan dikirim ke:</strong>
+      <strong>Konfirmasi akan dikirim ke:</strong>
       <p style="margin: 5px 0;"><%= bookingData.customerEmail %></p>
-      <strong>� WhatsApp:</strong>
+      <strong>WhatsApp:</strong>
       <p style="margin: 5px 0;"><%= bookingData.customerPhone %></p>
     </div>
     
@@ -361,10 +378,10 @@
     <form action="/booking/process-payment" method="POST">
       <div class="form-actions">
         <a href="/booking/review" class="btn btn-secondary">
-          ← Kembali
+          Kembali
         </a>
         <button type="submit" class="btn btn-success">
-          ✅ Konfirmasi Pembayaran
+          Konfirmasi Pembayaran
         </button>
       </div>
     </form>

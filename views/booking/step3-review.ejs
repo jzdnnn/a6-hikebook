@@ -1,7 +1,7 @@
 ﻿<style>
   .booking-container {
-    max-width: 700px;
-    margin: 40px auto;
+    max-width: 800px;
+    margin: 0 auto;
     padding: 20px;
   }
   
@@ -182,30 +182,41 @@
     padding: 12px 30px;
     border: none;
     border-radius: 6px;
-    font-size: 1em;
+    font-size: 1.1rem;
     cursor: pointer;
     transition: all 0.3s ease;
     text-decoration: none;
-    display: inline-block;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
   }
   
   .btn-secondary {
     background: #6c757d;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(108, 117, 125, 0.3);
   }
   
   .btn-secondary:hover {
     background: #5a6268;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(108, 117, 125, 0.4);
   }
   
   .btn-primary {
     background: #2c5f2d;
     color: white;
+    padding: 15px 40px;
+    box-shadow: 0 2px 6px rgba(44, 95, 45, 0.3);
     flex: 1;
   }
   
   .btn-primary:hover {
-    background: #1e4520;
+    background: #1e4620;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 10px rgba(44, 95, 45, 0.4);
   }
 </style>
 
@@ -231,14 +242,14 @@
   </div>
   
   <div class="booking-card">
-    <h2>� Review Booking Anda</h2>
+    <h2>Review Booking Anda</h2>
     <p>Mohon periksa kembali data booking Anda sebelum melanjutkan ke pembayaran.</p>
     
     <!-- Package Info -->
     <div class="review-section">
-      <h3>� Paket Pendakian</h3>
+      <h3>Informasi Jalur Pendakian</h3>
       <div class="info-row">
-        <span class="info-label">Nama Paket</span>
+        <span class="info-label">Nama Jalur</span>
         <span class="info-value"><%= package.name %></span>
       </div>
       <div class="info-row">
@@ -257,7 +268,7 @@
     
     <!-- Customer Info -->
     <div class="review-section">
-      <h3>� Data Pemesan</h3>
+      <h3>Data Pemesan</h3>
       <div class="info-row">
         <span class="info-label">Nama</span>
         <span class="info-value"><%= bookingData.customerName %></span>
@@ -285,7 +296,7 @@
     
     <!-- Participants Info -->
     <div class="review-section">
-      <h3>� Data Peserta (<%= bookingData.numberOfPeople %> orang)</h3>
+      <h3>Data Peserta (<%= bookingData.numberOfPeople %> orang)</h3>
       <div class="participants-list">
         <% if (bookingData.participants && bookingData.participants.length > 0) { %>
           <% bookingData.participants.forEach((participant, index) => { %>
@@ -304,7 +315,7 @@
     
     <!-- Price Breakdown -->
     <div class="review-section">
-      <h3>� Rincian Harga</h3>
+      <h3>Rincian Harga</h3>
       <div class="price-breakdown">
         <div class="price-row">
           <span>Harga per orang</span>
@@ -324,13 +335,13 @@
   
   <!-- Payment Method Selection -->
   <div class="booking-card">
-    <h3>� Pilih Metode Pembayaran</h3>
+    <h3>Pilih Metode Pembayaran</h3>
     <form action="/booking/checkout" method="POST">
       <div class="payment-methods">
         <label class="payment-option">
           <input type="radio" name="paymentMethod" value="transfer_bank" required />
           <div>
-            <strong>🏦 Transfer Bank</strong>
+            <strong>Transfer Bank</strong>
             <div style="font-size: 0.9em; color: #666;">BCA, Mandiri, BNI, BRI</div>
           </div>
         </label>
@@ -338,26 +349,18 @@
         <label class="payment-option">
           <input type="radio" name="paymentMethod" value="e_wallet" />
           <div>
-            <strong>� E-Wallet</strong>
+            <strong>E-Wallet</strong>
             <div style="font-size: 0.9em; color: #666;">GoPay, OVO, DANA, ShopeePay</div>
-          </div>
-        </label>
-        
-        <label class="payment-option">
-          <input type="radio" name="paymentMethod" value="credit_card" />
-          <div>
-            <strong>� Kartu Kredit/Debit</strong>
-            <div style="font-size: 0.9em; color: #666;">Visa, Mastercard, JCB</div>
           </div>
         </label>
       </div>
       
       <div class="form-actions">
         <a href="/booking/step2" class="btn btn-secondary">
-          ← Kembali
+          Kembali
         </a>
         <button type="submit" class="btn btn-primary">
-          Lanjut ke Pembayaran →
+          Lanjut ke Pembayaran
         </button>
       </div>
     </form>
