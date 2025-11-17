@@ -5,8 +5,12 @@ import ejsLayouts from 'express-ejs-layouts';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import bcrypt from 'bcryptjs';
+import dotenv from 'dotenv';
 import { registerToArea, renderArea } from './core/areaManager.js'; // <-- Import area manager
 import prisma from './prisma/client.js'; // <-- Import Prisma Client
+
+// Load environment variables
+dotenv.config();
 
 // Import API routes
 import authRoutes from './routes/auth.js';
@@ -19,15 +23,21 @@ const __dirname = path.dirname(__filename);
 
 const app = express();
 const port = process.env.PORT || 3000;
+const isProduction = process.env.NODE_ENV === 'production';
 
 // --- MIDDLEWARE ---
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(session({
-  secret: 'hikebook-secret-key-2025',
+  secret: process.env.SESSION_SECRET || 'hikebook-secret-key-2025',
   resave: false,
-  saveUninitialized: true,
-  cookie: { maxAge: 3600000 } // 1 hour
+  saveUninitialized: false,
+  cookie: { 
+    maxAge: 3600000, // 1 hour
+    secure: isProduction, // Set true in production with HTTPS
+    httpOnly: true,
+    sameSite: 'lax'
+  }
 }));
 // ------------------
 
